@@ -38,13 +38,16 @@ public class Main {
             System.out.println("Your information is not understandable type ");
         }
 
+
+        System.out.println("gerçek entter try");
+
     }
 
     public static void checkInputValues(String information, int informationCount) throws InputException {
         String[] inf = information.split(" ");
         if (inf.length != informationCount) {
            throw new InputException("") ;
-           /*her parametre arasına bir boşluk koyarak yazdırdığımız farz ettim*/
+           /* her parametre arasına bir boşluk koyarak yazdırdığımız farz ettim */
         }
     }
 
