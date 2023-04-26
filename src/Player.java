@@ -34,5 +34,6 @@ public abstract class Player {
     public void setScore(int score) {
         this.score = score;
     }
+    public Card playCard(){return null;};
 
 }

@@ -11,6 +11,9 @@ public class HumanPlayer extends Player{
             System.out.println(card.getCardFace() + card.getSuit());
         }
     }
-
+    @Override
+    public Card playCard() {
+        return null;
+    }
 
 }
