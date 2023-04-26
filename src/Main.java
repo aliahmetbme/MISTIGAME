@@ -8,6 +8,7 @@ public class Main {
         System.out.println("--Welcome to Mişti Game--");
 
         System.out.println("Please Enter how many player in game");
+        String x = "Hello I am in entery try";
 
        int gamersCount;
 
@@ -37,7 +38,7 @@ public class Main {
         } catch (InputException inputException) {
             System.out.println("Your information is not understandable type ");
         }
-
+        System.out.println("hello ");
     }
 
     public static void checkInputValues(String information, int informationCount) throws InputException {
