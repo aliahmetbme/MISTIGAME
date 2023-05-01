@@ -1,20 +1,20 @@
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.WeakHashMap;
 
 public class Main {
+    static ArrayList<Card> card;
     static int playerCount = 0;
-    static String firstGamer ;
-    static String secondGamer ;
-    static String thirdGamer ;
-    static String forthGamer ;
-
+    static int humanCounter = 0;
+    static String firstGamerName ;
+    static String secondGamerName ;
+    static String thirdGamerName ;
+    static String forthGamerName ;
     static String firstGamerCategory ;
     static String secondGamerCategory ;
     static String thirdGamerCategory ;
     static String forthGamerCategory ;
-
-
     static Player _firstGamer;
     static Player _secondGamer;
     static Player _thirdGamer;
@@ -24,9 +24,9 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("--Welcome to Mişti Game--");
+        System.out.println("-- Welcome to Mişti Game --");
 
-        System.out.println("Please Enter how many player in game");
+        System.out.print("Please Enter how many player in game: ");
 
 
         while (true) {
@@ -39,51 +39,62 @@ public class Main {
                 System.out.println("2");
                 break;
             } else {
-                System.out.println("\n  Please enter correct player number  2 or 4");
-                continue;
+                System.out.println("\nPlease enter correct player number  2 or 4");
+            }
+        }
+             
+        String[] gamersName = {firstGamerName,secondGamerName,thirdGamerName,forthGamerName};
+        String[] gamersCategories = {firstGamerCategory,secondGamerCategory,thirdGamerCategory,thirdGamerCategory,forthGamerCategory};
+        Player[] _gamers = {_firstGamer,_secondGamer,_thirdGamer,_fortGamer};
+        
+        int i = 0;
+
+
+        for (String g : gamersName){
+            try {
+                System.out.print("Please enter " + (i + 1) + "th gamers' name ");
+                gamersName[i] = scan.next();
+
+                System.out.print("Please enter " + (i + 1) + "th gamers' category ");
+                gamersCategories[i] = scan.next();
+
+                checkPlayerCategory(gamersCategories[i]);
+
+                if (gamersCategories[i].equals("HUMAN")) humanCounter++;
+                switch (gamersCategories[i]) {
+                    case "HUMAN" -> _gamers[i] = new HumanPlayer(gamersName[i], card, 0);
+                    case "EXPERT-BOTH" -> _gamers[i] = new ExpertPlayer(gamersName[i], card, 0);
+                    case "REGULAR-BOTH" -> _gamers[i] = new RegularPlayer(gamersName[i], card, 0);
+                    case "NOVICE-BOTH" -> _gamers[i] = new NovicePlayer(gamersName[i], card, 0);
+                }
+                i++;
+                if (i == playerCount) break;
+
+            } catch (GamerCategoryException e){
+                System.out.println("Error :  " + e.getMessage());
             }
         }
 
-        switch (playerCount) {
-            case 2:
-                while (true) {
-                    try {
-                        System.out.print("Please enter first gamers' name ");
-                        firstGamer = scan.next();
-                        System.out.print("Please enter first gamers' category: ");
-                        firstGamerCategory = scan.next();
-                        checkPlayerCategory(firstGamerCategory);
-
-                        System.out.print("Please enter second gamers' name ");
-                        secondGamer = scan.next();
-                        System.out.print("Please enter second gamers' category: ");
-                        secondGamerCategory = scan.next();
-                        checkPlayerCategory(secondGamerCategory);
-
-                        break;
-                    } catch (GamerCategoryException e) {
-                        System.out.println("Error :  " + e.getMessage());
-                    }
-                }
-
+        for (Player p : _gamers){
+            try {
+                System.out.println(p.getName() + " " + p.getHand() + " " + p.getScore());
+            }catch (NullPointerException e){
+                break;
+            }
         }
-
-
     }
 
-    public static int getPlayerCount() {
+    public static void getPlayerCount() {
         Scanner scan = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print("Please enter player count :");
                 playerCount = scan.nextInt();
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("\n Error!!! : Please type your count as number (Input is not an Integer)");
+                System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
                 scan.next();
             }
         }
-        return playerCount;
     }
 
     public static void checkPlayerCategory(String gamerCategory) throws GamerCategoryException {
@@ -92,5 +103,9 @@ public class Main {
             throw new GamerCategoryException("Please enter category correctly");
         }
 
+        if (humanCounter > 1){
+            humanCounter --;
+            throw new GamerCategoryException("You cannot choose HUMAN player more than one time");
+        }
     }
 }
