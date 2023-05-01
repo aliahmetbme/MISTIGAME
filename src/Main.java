@@ -3,24 +3,24 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
+    static int playerCount  = 0;
     public static void main(String[] args) {
+        getPlayerCount();
+    }
+    public static int getPlayerCount(){
         Scanner scan = new Scanner(System.in);
-        String name = null;
+        boolean isTrue ;
         while (true) {
-
             try {
-                System.out.print("Enter your name: ");
-                name = scan.nextLine();
-                if (name.matches(".*\\d+.*")) {
-                    throw new InputMismatchException();
-                }
+                System.out.println("Enter player count :");
+                playerCount = scan.nextInt();
                 break;
-            } catch (NoSuchElementException e) {
-                System.out.println("Invalid input. Please enter your name again.");
+            } catch (InputMismatchException e){
+                System.out.println("Error: Input is not an integer.");
                 scan.next();
             }
+
         }
-
-
+        return playerCount;
     }
 }
