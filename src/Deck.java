@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Deck {
     private ArrayList<Card> cards;
 
@@ -6,6 +9,7 @@ public class Deck {
         String[] suits = {"HEARTS", "DIAMONDS", "CLUBS", "SPADES"};
         String[] cardFaces = {"ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING"};
         int[] points = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
+        System.out.println("SELAM BEN ALİ AHMET");
 
         for (String suit : suits) {
             for (int i = 0; i < cardFaces.length; i++) {
