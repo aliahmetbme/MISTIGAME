@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.WeakHashMap;
 
 public class Main {
+
     static ArrayList<Card> card;
     static int playerCount = 0;
     static int humanCounter = 0;
