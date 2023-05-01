@@ -1,18 +1,26 @@
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
         Scanner scan = new Scanner(System.in);
-        while (true){
-            int name= 0;
+        String name = null;
+        while (true) {
+
             try {
-               name = scan.nextInt();
-               break;
-            }catch (Exception e){
-                System.out.println("You didnt enter user name correctly");
+                System.out.print("Enter your name: ");
+                name = scan.nextLine();
+                if (name.matches(".*\\d+.*")) {
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch (NoSuchElementException e) {
+                System.out.println("Invalid input. Please enter your name again.");
+                scan.next();
             }
         }
+
+
     }
 }
