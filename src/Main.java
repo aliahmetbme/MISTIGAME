@@ -66,10 +66,10 @@ public class Main {
 
                 if (gamersCategories[i].equals("HUMAN")) humanCounter++; // if HUMAN player are chosen, human counter are incase
                 switch (gamersCategories[i]) {
-                    case "HUMAN" -> _gamers[i] = new HumanPlayer(gamersName[i], card, 0);
-                    case "EXPERT-BOTH" -> _gamers[i] = new ExpertPlayer(gamersName[i], card, 0);
-                    case "REGULAR-BOTH" -> _gamers[i] = new RegularPlayer(gamersName[i], card, 0);
-                    case "NOVICE-BOTH" -> _gamers[i] = new NovicePlayer(gamersName[i], card, 0);
+                    case "HUMAN" -> _gamers[i] = new HumanPlayer(gamersName[i], card, 0,"HUMAN");
+                    case "EXPERT-BOTH" -> _gamers[i] = new ExpertPlayer(gamersName[i], card, 0,"EXPERT-BOTH");
+                    case "REGULAR-BOTH" -> _gamers[i] = new RegularPlayer(gamersName[i], card, 0,"REGULAR-BOTH");
+                    case "NOVICE-BOTH" -> _gamers[i] = new NovicePlayer(gamersName[i], card, 0,"NOVICE-BOTH");
                 }
                 i++;
                 if (i == playerCount) break; // the program create gamers as player count which entered in game as
@@ -87,7 +87,7 @@ public class Main {
             }
         }
         // just example
-        Player winner = new NovicePlayer("SIRAYASOK",card,1030);
+        Player winner = new NovicePlayer("SIRAK",card,130,"EXPERT-BOTH");
         /* At the end of the game */
         setTopTen(winner);
 
@@ -141,7 +141,7 @@ public class Main {
 
             while (scanner.hasNextLine()){
                 String[] information = scanner.nextLine().trim().split(",");
-                Player winwin = new Winners(information[0],card,Integer.parseInt(information[1].trim()));
+                Player winwin = new Winners(information[0],card,Integer.parseInt(information[2].trim()),information[1]);
                 winners[i] = winwin;
                 i ++;
             }
@@ -179,7 +179,7 @@ public class Main {
                 writer = new FileWriter("Score.txt");
                 for (Player p : winners){
                     if (p == null) break;
-                    writer.write(p.getName()+","+String.valueOf(p.getScore()+"\n"));
+                    writer.write(p.getName()+","+p.getLevel()+String.valueOf(p.getScore()+","+"\n"));
                 }
             } catch (IOException E){
                 System.out.println("Error : the file cannot be opened");
@@ -191,7 +191,6 @@ public class Main {
                     throw new RuntimeException(e);
                 }
             }
-            System.out.println("EXPERT LEVELİ EKLENECEK");
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
