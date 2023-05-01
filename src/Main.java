@@ -6,10 +6,11 @@ public class Main {
         System.out.println("Hello world!");
         Scanner scan = new Scanner(System.in);
         while (true){
+            int name= 0;
             try {
-                String name = scan.nextLine();
-                break;
-            }catch (InputMismatchException e){
+               name = scan.nextInt();
+               break;
+            }catch (Exception e){
                 System.out.println("You didnt enter user name correctly");
             }
         }
