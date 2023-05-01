@@ -133,17 +133,17 @@ public class Main {
         }
     }
 
-    public static void setTopTen(Player winner){
+    public static void setTopTen(Player winner) {
         try {
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
             int i = 0;
 
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 String[] information = scanner.nextLine().trim().split(",");
-                Player winwin = new Winners(information[0],card,Integer.parseInt(information[2].trim()),information[1]);
+                Player winwin = new Winners(information[0], card, Integer.parseInt(information[2].trim()), information[1]);
                 winners[i] = winwin;
-                i ++;
+                i++;
             }
 
             try {
@@ -169,21 +169,21 @@ public class Main {
                             winners[j + 1] = (temp);
                         }
                     }
-                    }catch (NullPointerException A) {
-                        break;
-                    }
+                } catch (NullPointerException A) {
+                    break;
+                }
             }
 
             FileWriter writer = null;
             try {
                 writer = new FileWriter("Score.txt");
-                for (Player p : winners){
+                for (Player p : winners) {
                     if (p == null) break;
-                    writer.write(p.getName()+","+p.getLevel()+String.valueOf(p.getScore()+","+"\n"));
+                    writer.write(p.getName() + "," + p.getLevel() + String.valueOf(p.getScore() + "," + "\n"));
                 }
-            } catch (IOException E){
+            } catch (IOException E) {
                 System.out.println("Error : the file cannot be opened");
-            }finally {
+            } finally {
                 try {
                     assert writer != null;
                     writer.close();
