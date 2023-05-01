@@ -1,8 +1,8 @@
 import java.io.PrintWriter;
 
-public class InputException extends Exception{
+public class GamerCategoryException extends Exception{
 
-    public InputException(String message){
+    public GamerCategoryException(String message){
        super(message);
     }
     @Override
