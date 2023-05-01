@@ -4,11 +4,13 @@ public abstract class Player {
     private String name;
     private ArrayList<Card> hand;
     private int score;
+    private String level;
 
-    public Player(String name, ArrayList<Card> hand, int score) {
+    public Player(String name, ArrayList<Card> hand, int score, String level) {
         this.name = name;
         this.hand = hand;
         this.score = score;
+        this.level = level;
     }
 
     public String getName() {
@@ -34,5 +36,11 @@ public abstract class Player {
     public void setScore(int score) {
         this.score = score;
     }
+    public String getLevel() {
+        return level;
+    }
 
+    public void setLevel(String level) {
+        this.level = level;
+    }
 }

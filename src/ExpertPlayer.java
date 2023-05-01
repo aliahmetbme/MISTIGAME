@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class ExpertPlayer extends BothPlayer{
-    public ExpertPlayer(String name, ArrayList<Card> hand, int score) {
-        super(name, hand, score);
+    public ExpertPlayer(String name, ArrayList<Card> hand, int score, String level) {
+        super(name, hand, score, level);
     }
 
     @Override
