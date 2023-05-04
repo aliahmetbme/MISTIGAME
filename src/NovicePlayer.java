@@ -10,12 +10,15 @@ public class NovicePlayer extends BothPlayer{
     }
     @Override
     public Card playCard() {
-
-        Random r = new Random();
-        int index=0;
-        if (this.getHand().size()!=1) {
-            index = r.nextInt(5) - 1;
+        try {
+            int index = 0;
+            if (this.getHand().size() != 1) {
+                index = r.nextInt(this.getHand().size()) - 1;
+            }
+            return this.getHand().get(index);
+        }catch(Exception e){
+            System.out.println("there is no card in this player's hand");
+            return null;
         }
-        return this.getHand().get(index);
     }
 }
