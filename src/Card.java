@@ -9,6 +9,13 @@ public class Card {
         this.points = points;
     }
 
+    public Card() {
+        this.suit = null;
+        this.cardFace = null;
+        this.points = 0;
+    }
+
+
     public String getSuit() {
         return suit;
     }
@@ -32,4 +39,6 @@ public class Card {
     public void setPoints(int points) {
         this.points = points;
     }
+    @Override
+    public String toString(){ return this.getCardFace()+this.getSuit();}
 }
