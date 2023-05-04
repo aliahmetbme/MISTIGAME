@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class HumanPlayer extends Player{
 
-    public HumanPlayer(String name, ArrayList<Card> hand, int score) {
-        super(name, hand, score);
+    public HumanPlayer(String name, ArrayList<Card> hand, int score, String level) {
+        super(name, hand, score,level);
     }
 
     public static void showHand(ArrayList<Card> cards){
@@ -12,5 +12,9 @@ public class HumanPlayer extends Player{
         }
     }
 
+    @Override
+    public Card playCard() {
+        return null;
+    }
 
 }
