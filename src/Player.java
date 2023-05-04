@@ -36,9 +36,11 @@ public abstract class Player {
     public void setScore(int score) {
         this.score = score;
     }
+
     public String getLevel() {
         return level;
     }
+
 
     public Card playCard(){return null;};
 
