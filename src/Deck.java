@@ -19,6 +19,10 @@ public class Deck {
         }
     }
 
+    public Deck(String filePath) {
+        cards = CardReader.readCardsFromFile(filePath);
+    }
+
     
     public void shuffle() {Collections.shuffle(cards);}
 
