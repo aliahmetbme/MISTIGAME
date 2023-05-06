@@ -42,9 +42,9 @@ public class Main {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
-
-        /*System.out.print("Please enter point file name: ");
-        checkFile()
+/*
+        System.out.print("Please enter point file name: ");
+        checkFile()*/
 
         String[] gamersName = {firstGamerName,secondGamerName,thirdGamerName,forthGamerName};
         String[] gamersCategories = {firstGamerCategory,secondGamerCategory,thirdGamerCategory,forthGamerCategory};
@@ -84,13 +84,16 @@ public class Main {
             }catch (NullPointerException e){
                 break;
             }
-        }*/
+        }
+
+
+
         // just example
         // Player winner = new NovicePlayer("SIRAK",card,130,"EXPERT-BOTH");
         /* At the end of the game */
         //setTopTen(winner);
 
-        ArrayList<Card> card1= new ArrayList<>();
+/*        ArrayList<Card> card1= new ArrayList<>();
         ArrayList<Card> card2= new ArrayList<>();
         ArrayList<Card> card3= new ArrayList<>();
         ArrayList<Card> card4= new ArrayList<>();
@@ -98,7 +101,7 @@ public class Main {
         Player player2= new ExpertPlayer("B",card2,0,"Expert");
         Player player3= new RegularPlayer("C",card3,0,"regular");
         Player player4= new NovicePlayer("D",card4,0,"novice");
-        Player[] _gamers={player1,player2,player3,player4};
+        Player[] _gamers={player1,player2,player3,player4};*/
         //// oyun başlangıcı taslağı
 
         Deck deck= new Deck();
@@ -111,10 +114,13 @@ public class Main {
         try {
             while (deck.getNumCards() != 0) {
                 for (Player gamer : _gamers) {
+                    if(gamer==null){ break;}
                     gamer.setHand(deck.deal(4));
+
                 }
                 while (_gamers[_gamers.length - 1].getHand().size() != 0) {
                     for (Player gamer : _gamers) {
+                        if(gamer==null){ continue;}
                         showboard(board);
                         Card throwcard = gamer.playCard();
                         if (Player.topcard != null) {
@@ -143,7 +149,7 @@ public class Main {
                                 board.add(throwcard);
                                 Player.topcard = throwcard;
                                 ExpertPlayer.throwed.add(throwcard);
-                                gamer.getHand().remove(throwcard);
+                                gamer.getHand().remove(throwcard);  // BURASI BİTİNCE THROWEDA AYNI KARTI İKİ KERE EKLİYOR
                             }
                         }
 
