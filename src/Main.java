@@ -26,11 +26,8 @@ public class Main {
 
         System.out.println("-- Welcome to Mişti Game --");
 
-        System.out.print("Please Enter how many player in game: ");
-
-
         while (true) {
-            getPlayerCount(); // how many player will play
+            getPlayerCount(args[0]); // how many player will play
 
             if (playerCount == 4) {
                 System.out.println("4");
@@ -42,9 +39,9 @@ public class Main {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
-/*
+        /*
         System.out.print("Please enter point file name: ");
-        checkFile()*/
+        checkFile(args[1])*/
 
         String[] gamersName = {firstGamerName,secondGamerName,thirdGamerName,forthGamerName};
         String[] gamersCategories = {firstGamerCategory,secondGamerCategory,thirdGamerCategory,forthGamerCategory};
@@ -55,11 +52,10 @@ public class Main {
 
         for (String g : gamersName){
             try {
-                System.out.print("Please enter " + (i + 1) + "th gamers' name ");
-                gamersName[i] = scan.next(); // taking players name
 
-                System.out.print("Please enter " + (i + 1) + "th gamers' category ");
-                gamersCategories[i] = scan.next(); // to choose players category, we need to take this information
+                gamersName[i] = args[ i +2 ]; // taking players name
+
+                gamersCategories[i] = args[i + 3]; // to choose players category, we need to take this information
 
                 checkPlayerCategory(gamersCategories[i]);
 
@@ -152,14 +148,33 @@ public class Main {
                                 gamer.getHand().remove(throwcard);  // BURASI BİTİNCE THROWEDA AYNI KARTI İKİ KERE EKLİYOR
                             }
                         }
-
                     }
-
                 }
             }
         }catch(Exception e){
             System.out.print("something went wrong with the game please start the game again");
         }
+
+        for (int x = 0; x < _gamers.length - 1; x++) {
+            try {
+                for (int j = 0; j < _gamers.length - x - 1; j++) {
+                    if (_gamers[j].getScore() < _gamers[j + 1].getScore()) {
+                        Player temp = _gamers[j];
+                        _gamers[j] = _gamers[j + 1];
+                        _gamers[j + 1] = (temp);
+                    }
+                }
+            } catch (NullPointerException A) {
+                break;
+            }
+        }
+
+        for (Player p : _gamers){
+            System.out.println(p.getName() + "   " + p.getScore());
+        }
+
+        setTopTen(_gamers[0]);
+
 
     }
     public static void showboard(ArrayList<Card> board){
@@ -174,15 +189,14 @@ public class Main {
         System.out.print("\n");
     }
 
-    public static void getPlayerCount() {
-        Scanner scan = new Scanner(System.in);
+    public static void getPlayerCount(String args) {
+
         while (true) {
             try {
-                playerCount = scan.nextInt();
+                playerCount = Integer.parseInt(args.trim());
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
-                scan.next();
             }
         }
     }
@@ -200,22 +214,23 @@ public class Main {
     }
 
 
-    public static void checkFile() {
-        Scanner scanner = new Scanner(System.in);
-        String pointFolderName = scanner.next().trim();
+    public static void checkFile(String args) {
+
+        String pointFolderName = args.trim();
         while (true) {
             try {
                 Scanner scan = new Scanner(new BufferedReader(new FileReader((pointFolderName + ".txt"))));
                 break;
             } catch (FileNotFoundException e) {
                 System.out.print("The file you entered are not available please try again: ");
-                scanner.next();
+
             }
         }
     }
 
     public static void setTopTen(Player winner) {
         try {
+
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
             int i = 0;
