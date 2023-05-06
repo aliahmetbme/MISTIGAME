@@ -8,19 +8,22 @@ public class HumanPlayer extends Player{
     }
 
     public void showHand(){
+        System.out.print("Your hand:\n");
         for (Card card : this.getHand()) {
-            System.out.println(card.toString()+" ");
+            System.out.print(card.toString()+" ");
         }
+        System.out.print("\n");
     }
 
     @Override
     public Card playCard() {
         Scanner sc = new Scanner(System.in);
+        this.showHand();
         while (true) {
             int index=-2;
             try {
                 System.out.println("Please enter an index to throw the card(1,2,3,4)");
-                int user=sc.nextInt();
+                int user= Integer.parseInt(sc.nextLine());
                 if(user==1 || user==2|| user==3|| user==4){
                     index=user;
                     return this.getHand().get(index-1);
