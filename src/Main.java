@@ -4,7 +4,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-
     static ArrayList<Card> card;
     static int playerCount = 0;
     static int humanCounter = 0;
@@ -43,14 +42,14 @@ public class Main {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
-
+/*
         System.out.print("Please enter point file name: ");
-        checkFile();
+        checkFile()*/
 
         String[] gamersName = {firstGamerName,secondGamerName,thirdGamerName,forthGamerName};
-        String[] gamersCategories = {firstGamerCategory,secondGamerCategory,thirdGamerCategory,thirdGamerCategory,forthGamerCategory};
+        String[] gamersCategories = {firstGamerCategory,secondGamerCategory,thirdGamerCategory,forthGamerCategory};
         Player[] _gamers = {_firstGamer,_secondGamer,_thirdGamer,_fortGamer};
-        
+
         int i = 0;
 
 
@@ -86,11 +85,93 @@ public class Main {
                 break;
             }
         }
-        // just example
-        Player winner = new NovicePlayer("SIRAK",card,130,"EXPERT-BOTH");
-        /* At the end of the game */
-        setTopTen(winner);
 
+
+
+        // just example
+        // Player winner = new NovicePlayer("SIRAK",card,130,"EXPERT-BOTH");
+        /* At the end of the game */
+        //setTopTen(winner);
+
+/*        ArrayList<Card> card1= new ArrayList<>();
+        ArrayList<Card> card2= new ArrayList<>();
+        ArrayList<Card> card3= new ArrayList<>();
+        ArrayList<Card> card4= new ArrayList<>();
+        Player player1= new HumanPlayer("a",card1,0,"HUMAN");
+        Player player2= new ExpertPlayer("B",card2,0,"Expert");
+        Player player3= new RegularPlayer("C",card3,0,"regular");
+        Player player4= new NovicePlayer("D",card4,0,"novice");
+        Player[] _gamers={player1,player2,player3,player4};*/
+        //// oyun başlangıcı taslağı
+
+        Deck deck= new Deck();
+        deck.shuffle();
+        deck.cut();
+        ArrayList<Card> board=new ArrayList<>(4);
+        board=deck.deal(4);
+        ExpertPlayer.throwed=board;
+        Player.topcard=board.get(3);
+        try {
+            while (deck.getNumCards() != 0) {
+                for (Player gamer : _gamers) {
+                    if(gamer==null){ break;}
+                    gamer.setHand(deck.deal(4));
+
+                }
+                while (_gamers[_gamers.length - 1].getHand().size() != 0) {
+                    for (Player gamer : _gamers) {
+                        if(gamer==null){ continue;}
+                        showboard(board);
+                        Card throwcard = gamer.playCard();
+                        if (Player.topcard != null) {
+                            if (throwcard.getCardFace().equals(Player.topcard.getCardFace())) {
+                                if (board.size() == 1) {
+                                    System.out.print("MİŞTİ");
+                                    gamer.setScore(gamer.getScore() + 10 + throwcard.getPoints() + Player.topcard.getPoints());
+                                    ExpertPlayer.throwed.add(throwcard);
+                                    Player.topcard = null;
+                                    board.clear();
+                                    gamer.getHand().remove(throwcard);
+                                }
+                            }else if (throwcard.getCardFace().equals(Player.topcard.getCardFace()) || throwcard.getCardFace().equals("JACK")) {
+                                System.out.print("you got all the cards at the board");
+                                for (Card card : board) {
+                                    gamer.setScore(gamer.getScore() + card.getPoints());
+                                }
+                                gamer.setScore(gamer.getScore() + throwcard.getPoints());
+                                Player.topcard = null;
+                                ExpertPlayer.throwed.add(throwcard);
+                                board.clear();
+                                gamer.getHand().remove(throwcard);
+                            }
+                        else {
+                                System.out.print(throwcard.toString() + " played by player\n");
+                                board.add(throwcard);
+                                Player.topcard = throwcard;
+                                ExpertPlayer.throwed.add(throwcard);
+                                gamer.getHand().remove(throwcard);  // BURASI BİTİNCE THROWEDA AYNI KARTI İKİ KERE EKLİYOR
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }catch(Exception e){
+            System.out.print("something went wrong with the game please start the game again");
+        }
+
+    }
+    public static void showboard(ArrayList<Card> board){
+        if(board.size()!=0){
+            System.out.print("board:\n");
+            for (Card card : board){
+                System.out.print(card.toString()+"  ");
+            }
+        }else{
+            System.out.print("board is empty");
+        }
+        System.out.print("\n");
     }
 
     public static void getPlayerCount() {

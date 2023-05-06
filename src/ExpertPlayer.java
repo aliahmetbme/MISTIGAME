@@ -3,14 +3,13 @@ import java.util.Collections;
 import java.util.Random;
 
 public class ExpertPlayer extends BothPlayer{
-
-    ArrayList<Card> throwed;
-    private Card topcard= null;
+    static ArrayList<Card> throwed;
+    /*private Card topcard= null;*/
     public ExpertPlayer(String name, ArrayList<Card> hand, int score, String level) {
         super(name, hand, score, level);
     }
 
-    public void addThrowed(Card card){
+ /*   public void addThrowed(Card card){
         throwed.add(card);
     }
     public void SetTopCard(Card card){
@@ -18,7 +17,7 @@ public class ExpertPlayer extends BothPlayer{
     }
     public void SetTopCard(){
         this.topcard = null;
-    }
+    }*/
     @Override
     public Card playCard() {
         Random r=new Random();
@@ -49,7 +48,7 @@ public class ExpertPlayer extends BothPlayer{
                 cardindex= repeat.indexOf(Collections.max(repeat));
             }//there is no card in throwed card or matched card and there are more than 1 card in the hand
             else{
-                cardindex = r.nextInt(this.getHand().size()) - 1;
+                cardindex = r.nextInt(this.getHand().size());
             }
             return this.getHand().get(cardindex);
         }catch(Exception e){
