@@ -48,7 +48,7 @@ public class Deck {
 
         return cards;
     }
-}
+
 
     public Deck(String filePath) {
         cards = CardReader.readCardsFromFile(filePath);

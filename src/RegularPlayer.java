@@ -10,19 +10,24 @@ public class RegularPlayer extends BothPlayer{
 
     @Override
     public Card playCard() {
-        Card t_card = null;
-        if(topcard!=null){
-            for (Card card : this.getHand()) {
-                if (topcard.getCardFace().equals(card.getCardFace())) {
-                    return card;
+        try {
+            Card t_card = null;
+            if (topcard != null) {
+                for (Card card : this.getHand()) {
+                    if (topcard.getCardFace().equals(card.getCardFace())) {
+                        return card;
+                    }
                 }
             }
+            int index = 0;
+            if (this.getHand().size() != 1) {
+                index = r.nextInt(this.getHand().size()) - 1;
+            }
+            return this.getHand().get(index);
+        }catch(Exception e){
+            System.out.println("there is no card in this player's hand");
+            return null;
         }
-        int index=0;
-        if (this.getHand().size()!=1) {
-            index = r.nextInt(5) - 1;
-        }
-        return this.getHand().get(index);
     }
 
     public void SetTopCard(Card card){
