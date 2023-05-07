@@ -13,7 +13,7 @@ public class NovicePlayer extends BothPlayer{
         try {
             int index = 0;
             if (this.getHand().size() != 1) {
-                index = r.nextInt(this.getHand().size()) - 1;
+                index = r.nextInt(this.getHand().size()) ;
             }
             return this.getHand().get(index);
         }catch(Exception e){
