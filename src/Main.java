@@ -116,11 +116,10 @@ public class Main {
                 for (Player gamer : _gamers) {
                     if(gamer==null){ break;}
                     gamer.setHand(deck.deal(4));
-
                 }
                 while (_gamers[_gamers.length - 1].getHand().size() != 0) {
                     for (Player gamer : _gamers) {
-                        if(gamer==null){ continue;}
+                        if(gamer==null){ break;}
                         showboard(board);
                         Card throwcard = gamer.playCard();
                         if (Player.topcard != null) {
@@ -160,6 +159,31 @@ public class Main {
         }catch(Exception e){
             System.out.print("something went wrong with the game please start the game again");
         }
+
+        for (int x = 0; x < _gamers.length - 1; x++) {
+            try {
+                for (int j = 0; j < _gamers.length - x - 1; j++) {
+                    if (_gamers[j].getScore() < _gamers[j + 1].getScore()) {
+                        Player temp = _gamers[j];
+                        _gamers[j] = _gamers[j + 1];
+                        _gamers[j + 1] = (temp);
+                    }
+                }
+            } catch (NullPointerException A) {
+                break;
+            }
+        }
+
+        for (Player p : _gamers) {
+            try {
+                System.out.println(p.getName() + "   " + p.getScore());
+            } catch (NullPointerException s) {
+                break;
+            }
+        }
+
+
+        setTopTen(_gamers[0]);
 
     }
     public static void showboard(ArrayList<Card> board){
@@ -260,7 +284,7 @@ public class Main {
                 writer = new FileWriter("Score.txt");
                 for (Player p : winners) {
                     if (p == null) break;
-                    writer.write(p.getName() + "," + p.getLevel() + String.valueOf(p.getScore() + "," + "\n"));
+                    writer.write(p.getName() + "," + p.getLevel() + "," + String.valueOf(p.getScore() + "\n"));
                 }
             } catch (IOException E) {
                 System.out.println("Error : the file cannot be opened");
