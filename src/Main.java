@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    static int roundCount;
     static ArrayList<Card> card;
     static int playerCount = 0;
     static int humanCounter = 0;
@@ -20,9 +21,7 @@ public class Main {
     static Player _thirdGamer;
     static Player _fortGamer;
 
-    public static void main(String[] args) {
-
-        Scanner scan = new Scanner(System.in);
+    public static void main(String[] args)  {
 
         System.out.println("-- Welcome to Mişti Game --");
 
@@ -39,50 +38,63 @@ public class Main {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
-        /*
-        System.out.print("Please enter point file name: ");
-        checkFile(args[1])*/
+        /*checkFile(args[1])*/
 
         String[] gamersName = {firstGamerName,secondGamerName,thirdGamerName,forthGamerName};
         String[] gamersCategories = {firstGamerCategory,secondGamerCategory,thirdGamerCategory,forthGamerCategory};
         Player[] _gamers = {_firstGamer,_secondGamer,_thirdGamer,_fortGamer};
 
-        int i = 0;
+        try {
+            getRoundCount(args[2]);
+        } catch (ParametersError e) {
+            e.getMessage();
+        }
 
+        int i = 0;
 
         for (String g : gamersName){
             try {
+                int x = (i/2);
+                gamersName[x] = args[ i + 3 ]; // taking players name
+                System.out.println( args[ i + 3 ] + " args[ "+(i + 3)+ "]");
+                gamersCategories[x] = args[i + 4]; // to choose players category, we need to take this information
+                System.out.println( args[ i + 4 ] + " args[ "+(i + 4) + "]");
+                checkPlayerCategory(gamersCategories[x]);
 
-                gamersName[i] = args[ i +2 ]; // taking players name
-
-                gamersCategories[i] = args[i + 3]; // to choose players category, we need to take this information
-
-                checkPlayerCategory(gamersCategories[i]);
-
-                if (gamersCategories[i].equals("HUMAN")) humanCounter++; // if HUMAN player are chosen, human counter are incase
-                switch (gamersCategories[i]) {
-                    case "HUMAN" -> _gamers[i] = new HumanPlayer(gamersName[i], card, 0,"HUMAN");
-                    case "EXPERT-BOTH" -> _gamers[i] = new ExpertPlayer(gamersName[i], card, 0,"EXPERT-BOTH");
-                    case "REGULAR-BOTH" -> _gamers[i] = new RegularPlayer(gamersName[i], card, 0,"REGULAR-BOTH");
-                    case "NOVICE-BOTH" -> _gamers[i] = new NovicePlayer(gamersName[i], card, 0,"NOVICE-BOTH");
+                if (gamersCategories[x].equals("HUMAN")) humanCounter++; // if HUMAN player are chosen, human counter are incase
+                switch (gamersCategories[x]) {
+                    case "HUMAN" -> _gamers[x] = new HumanPlayer(gamersName[x], card, 0,"HUMAN");
+                    case "EXPERT-BOTH" -> _gamers[x] = new ExpertPlayer(gamersName[x], card, 0, "EXPERT-BOTH");
+                    case "REGULAR-BOTH" -> _gamers[x] = new RegularPlayer(gamersName[x], card, 0,"REGULAR-BOTH");
+                    case "NOVICE-BOTH" -> _gamers[x] = new NovicePlayer(gamersName[x], card, 0,"NOVICE-BOTH");
                 }
-                i++;
-                if (i == playerCount) break; // the program create gamers as player count which entered in game as
+                System.out.println(i + "i");
+                i+=2;
+
+                System.out.println(x + " x");
+                if ( (x + 1)== playerCount ) break; // the program create gamers as player count which entered in game as
 
             } catch (GamerCategoryException e){
                 System.out.println("Error :  " + e.getMessage());
+            } catch (ArrayIndexOutOfBoundsException e){
+                try {
+                    throw new ParametersError("Please provide parameters correctly " +
+                            "1 - Player Count 2 - Round Count 3 - First player name  " +
+                            "4 - Second Player name Third Player name Fourth Player name");
+                } catch (ParametersError ex) {
+                    ex.getMessage();
+                }
             }
         }
 
         for (Player p : _gamers){
             try {
-                System.out.println(p.getName() + " " + p.getHand() + " " + p.getScore());
+                System.out.println(p.getName() + " " + p.getHand() + " " + p.getScore() + " " + p.getLevel());
             }catch (NullPointerException e){
+                System.out.println("null");
                 break;
             }
         }
-
-
 
         // just example
         // Player winner = new NovicePlayer("SIRAK",card,130,"EXPERT-BOTH");
@@ -152,7 +164,7 @@ public class Main {
                 }
             }
         }catch(Exception e){
-            System.out.print("something went wrong with the game please start the game again");
+            System.out.println("something went wrong with the game please start the game again");
         }
 
         for (int x = 0; x < _gamers.length - 1; x++) {
@@ -170,10 +182,14 @@ public class Main {
         }
 
         for (Player p : _gamers){
-            System.out.println(p.getName() + "   " + p.getScore());
+            try {
+                System.out.println(p.getName() + "   " + p.getScore());
+            }catch (NullPointerException e){
+                break;
+            }
         }
 
-        setTopTen(_gamers[0]);
+        //setTopTen(_gamers[0]);
 
 
     }
@@ -230,7 +246,6 @@ public class Main {
 
     public static void setTopTen(Player winner) {
         try {
-
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
             int i = 0;
@@ -291,5 +306,19 @@ public class Main {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void getRoundCount(String args) throws ParametersError {
+        try {
+            roundCount = Integer.parseInt(args.trim());
+        } catch (Exception e){
+            System.err.println("Invalid parameter please provide Integer value");
+            System.exit(1);
+            throw new ParametersError("Please provide parameters correctly " +
+                    "1 - Player Count 2 - Round Count 3 - First player name  " +
+                    "4 - Second Player name Third Player name Fourth Player name") ;
+
+        }
+
     }
 }
