@@ -3,7 +3,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CardReader {
+public class
+CardReader {
     public static ArrayList<Card> readCardsFromFile(String filePath) {
         ArrayList<Card> cards = new ArrayList<>();
 
