@@ -38,7 +38,7 @@ public class Main {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
-        /*checkFile(args[1])*/
+        checkFile(args[1]);
 
         String[] gamersName = {firstGamerName, secondGamerName, thirdGamerName, forthGamerName};
         String[] gamersCategories = {firstGamerCategory, secondGamerCategory, thirdGamerCategory, forthGamerCategory};
@@ -133,7 +133,7 @@ public class Main {
                         if (gamer == null) {
                             break;
                         }
-                        showboard(board);
+                        showBoard(board);
                         Card throwcard = gamer.playCard();
                         if (Player.topcard != null) {
                             if (throwcard.getCardFace().equals(Player.topcard.getCardFace())) {
@@ -194,133 +194,125 @@ public class Main {
 
 
 
+
     }
-            public static void showboard (ArrayList < Card > board) {
-                if (board.size() != 0) {
-                    System.out.print("board:\n");
-                    for (Card card : board) {
-                        System.out.print(card.toString() + "  ");
-                    }
+    public static void showBoard (ArrayList < Card > board) {
+        if (board.size() != 0) {
+            System.out.print("board:\n");
+            for (Card card : board) {
+                System.out.print(card.toString() + "  ");
+            }
+        } else {
+            System.out.print("board is empty");
+        }
+        System.out.print("\n");
+    }
+    public static void getPlayerCount (String args){
+
+        while (true) {
+            try {
+                playerCount = Integer.parseInt(args.trim());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
+            }
+        }
+    }
+    public static void checkPlayerCategory (String gamerCategory) throws GamerCategoryException {
+
+            if (!gamerCategory.equals("HUMAN") && !gamerCategory.equals("EXPERT-BOTH") && !gamerCategory.equals("REGULAR-BOTH") && !gamerCategory.equals("NOVICE-BOTH")) {
+                throw new GamerCategoryException("Please enter category correctly");
+            }
+
+            if (humanCounter > 1) {
+                humanCounter--;  // because program have already warned gamers, human count are decreased
+                throw new GamerCategoryException("You cannot choose HUMAN player more than one time");
+            }
+    }
+    public static void checkFile (String args) {
+        String pointFolderName = args.trim();
+        File file = new File(pointFolderName + ".txt");
+        try {
+            if (file.exists()) {
+                System.out.println("The file exists.");
+            } else {
+                System.out.println("The file does not exist.");
+                throw new FileNotFoundException("The file you entered are not available please try again: ");
+            }
+        } catch (FileNotFoundException f){
+            f.getMessage();
+        }
+
+    }
+    public static void setTopTen (Player winner){
+        try {
+            Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
+            Player[] winners = new Player[10]; // to store winners information easier, a player array are created
+            int i = 0;
+
+            while (scanner.hasNextLine()) {
+                String[] information = scanner.nextLine().trim().split(",");
+                Player winwin = new Winners(information[0], card, Integer.parseInt(information[2].trim()), information[1]);
+                winners[i] = winwin;
+                i++;
+            }
+            try {
+                if (winners[i] == null && i != 8) {
+                    winners[i] = winner;
                 } else {
-                    System.out.print("board is empty");
-                }
-                System.out.print("\n");
-    }
-
-            public static void getPlayerCount (String args){
-
-                while (true) {
-                    try {
-                        playerCount = Integer.parseInt(args.trim());
-                        break;
-                    } catch (InputMismatchException e) {
-                        System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
+                    if (winner.getScore() > winners[i].getScore()) {
+                        winners[i] = winner;
                     }
                 }
-            }
-
-            public static void checkPlayerCategory (String gamerCategory) throws GamerCategoryException {
-
-                if (!gamerCategory.equals("HUMAN") && !gamerCategory.equals("EXPERT-BOTH") && !gamerCategory.equals("REGULAR-BOTH") && !gamerCategory.equals("NOVICE-BOTH")) {
-                    throw new GamerCategoryException("Please enter category correctly");
-                }
-
-                if (humanCounter > 1) {
-                    humanCounter--;  // because program have already warned gamers, human count are decreased
-                    throw new GamerCategoryException("You cannot choose HUMAN player more than one time");
+            } catch (ArrayIndexOutOfBoundsException e) {
+                if (winner.getScore() > winners[9].getScore()) {
+                    winners[9] = winner;
                 }
             }
-
-
-            public static void checkFile (String args){
-
-                String pointFolderName = args.trim();
-                while (true) {
-                    try {
-                        Scanner scan = new Scanner(new BufferedReader(new FileReader((pointFolderName + ".txt"))));
-                        break;
-                    } catch (FileNotFoundException e) {
-                        System.out.print("The file you entered are not available please try again: ");
-
-                    }
-                }
-            }
-
-            public static void setTopTen (Player winner){
+            for (int x = 0; x < winners.length - 1; x++) {
                 try {
-                    Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
-                    Player[] winners = new Player[10]; // to store winners information easier, a player array are created
-                    int i = 0;
-
-                    while (scanner.hasNextLine()) {
-                        String[] information = scanner.nextLine().trim().split(",");
-                        Player winwin = new Winners(information[0], card, Integer.parseInt(information[2].trim()), information[1]);
-                        winners[i] = winwin;
-                        i++;
-                    }
-
-                    try {
-                        if (winners[i] == null && i != 8) {
-                            winners[i] = winner;
-                        } else {
-                            if (winner.getScore() > winners[i].getScore()) {
-                                winners[i] = winner;
-                            }
-                        }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        if (winner.getScore() > winners[9].getScore()) {
-                            winners[9] = winner;
+                    for (int j = 0; j < winners.length - x - 1; j++) {
+                        if (winners[j].getScore() < winners[j + 1].getScore()) {
+                            Player temp = winners[j];
+                            winners[j] = winners[j + 1];
+                            winners[j + 1] = (temp);
                         }
                     }
+                } catch (NullPointerException A) {
+                    break;
+                }
+            }
 
-                    for (int x = 0; x < winners.length - 1; x++) {
-                        try {
-                            for (int j = 0; j < winners.length - x - 1; j++) {
-                                if (winners[j].getScore() < winners[j + 1].getScore()) {
-                                    Player temp = winners[j];
-                                    winners[j] = winners[j + 1];
-                                    winners[j + 1] = (temp);
-                                }
-                            }
-                        } catch (NullPointerException A) {
-                            break;
-                        }
-                    }
-
-                    FileWriter writer = null;
-                    try {
-                        writer = new FileWriter("Score.txt");
-                        for (Player p : winners) {
-                            if (p == null) break;
-                            writer.write(p.getName() + "," + p.getLevel() + "," + String.valueOf(p.getScore() + "\n"));
-                        }
-                    } catch (IOException E) {
-                        System.out.println("Error : the file cannot be opened");
-                    } finally {
-                        try {
-                            assert writer != null;
-                            writer.close();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-
-                } catch (FileNotFoundException e) {
+            FileWriter writer = null;
+            try {
+                writer = new FileWriter("Score.txt");
+                for (Player p : winners) {
+                    if (p == null) break;
+                    writer.write(p.getName() + "," + p.getLevel() + "," + String.valueOf(p.getScore() + "\n"));
+                }
+            } catch (IOException E) {
+                System.out.println("Error : the file cannot be opened");
+            } finally {
+                try {
+                    assert writer != null;
+                    writer.close();
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-
-            public static void getRoundCount (String args)  throws ParametersError {
-                try {
-                    roundCount = Integer.parseInt(args.trim());
-                } catch (Exception e) {
-                    System.err.println("Invalid parameter please provide Integer value");
-                    System.exit(1);
-                    throw new ParametersError("Please provide parameters correctly " +
-                            "1 - Player Count 2 - Round Count 3 - First player name  " +
-                            "4 - Second Player name Third Player name Fourth Player name");
-
-                }
-
-            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
+    }
+    public static void getRoundCount (String args)  throws ParametersError {
+        try {
+            roundCount = Integer.parseInt(args.trim());
+        } catch (Exception e) {
+            System.err.println("Invalid parameter please provide Integer value");
+            System.exit(1);
+            throw new ParametersError("Please provide parameters correctly " +
+                    "1 - Player Count 2 - Round Count 3 - First player name  " +
+                    "4 - Second Player name Third Player name Fourth Player name");
+        }
+    }
+}

@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Deck {
     private ArrayList<Card> cards;
+    private String filePath;
 
     public Deck() {
         cards = new ArrayList<>();
@@ -51,7 +52,7 @@ public class Deck {
 
 
     public Deck(String filePath) {
-        cards = CardReader.readCardsFromFile(filePath);
+        cards = readCardsFromFile(filePath);
     }
 
     
