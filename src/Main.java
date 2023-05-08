@@ -1,3 +1,4 @@
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -27,9 +28,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("OYUNCU SAYISI GİR");
-            int x = scanner.nextInt();
-            getPlayerCount(String.valueOf(x)); // how many player will play
+
+            getPlayerCount(args[0]); // how many player will play
 
             if (playerCount == 4) {
                 System.out.println("4");
@@ -41,42 +41,42 @@ public class Main {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
-       // checkFile(args[1]);
+        checkFile(args[1]);
 
         String[] gamersName = {firstGamerName, secondGamerName, thirdGamerName, forthGamerName};
         String[] gamersCategories = {firstGamerCategory, secondGamerCategory, thirdGamerCategory, forthGamerCategory};
         Player[] _gamers = {_firstGamer, _secondGamer, _thirdGamer, _fortGamer};
 
-//        try {
-//            getRoundCount(args[2]);
-//        } catch (ParametersError e) {
-//            e.getMessage();
-//        }
+        try {
+            getRoundCount(args[2]);
+        } catch (ParametersError e) {
+            e.getMessage();
+            System.exit(1);
+        }
 
         int i = 0;
 
         for (String g : gamersName) {
             try {
-                System.out.println("Please enter" + (i+1) +" name");
-                gamersName[i] = scanner.next(); // taking players name
-                System.out.println();
-                System.out.println("Please enter" + (i+1) +" category");
-                gamersCategories[i] = scanner.next(); // to choose players category, we need to take this information
 
-                checkPlayerCategory(gamersCategories[i]);
+                gamersName[i/2] = args[i+4]; // taking players name
 
-                if (gamersCategories[i].equals("HUMAN"))
+                gamersCategories[i/2] = args[i+5]; // to choose players category, we need to take this information
+
+                checkPlayerCategory(gamersCategories[i/2]);
+
+                if (gamersCategories[i/2].equals("HUMAN"))
                     humanCounter++; // if HUMAN player are chosen, human counter are increase
-                switch (gamersCategories[i]) {
-                    case "HUMAN" -> _gamers[i] = new HumanPlayer(gamersName[i], card, 0, "HUMAN");
-                    case "EXPERT-BOTH" -> _gamers[i] = new ExpertPlayer(gamersName[i], card, 0, "EXPERT-BOTH");
-                    case "REGULAR-BOTH" -> _gamers[i] = new RegularPlayer(gamersName[i], card, 0, "REGULAR-BOTH");
-                    case "NOVICE-BOTH" -> _gamers[i] = new NovicePlayer(gamersName[i], card, 0, "NOVICE-BOTH");
+                switch (gamersCategories[i/2]) {
+                    case "HUMAN" -> _gamers[i/2] = new HumanPlayer(gamersName[i/2], card, 0, "HUMAN");
+                    case "EXPERT-BOTH" -> _gamers[i/2] = new ExpertPlayer(gamersName[i/2], card, 0, "EXPERT-BOTH");
+                    case "REGULAR-BOTH" -> _gamers[i/2] = new RegularPlayer(gamersName[i/2], card, 0, "REGULAR-BOTH");
+                    case "NOVICE-BOTH" -> _gamers[i/2] = new NovicePlayer(gamersName[i/2], card, 0, "NOVICE-BOTH");
                 }
 
-                i += 1;
+                i += 2;
 
-                if ((i) == playerCount) break; // the program create gamers as player count which entered in game as
+                if ((i/2) == playerCount) break; // the program create gamers as player count which entered in game as
 
             } catch (GamerCategoryException e) {
                 System.out.println("Error :  " + e.getMessage());
@@ -99,8 +99,10 @@ public class Main {
             }
         }
 
-        boolean verbose = true; /// kod testi için oluşturuldu.
-
+        boolean verbose = takeVerboseValue(args[3]); /// kod testi için oluşturuldu.
+        if(!verbose){
+            System.out.println("Yanlış");
+        }
         //// oyun başlangıcı
 
         try {
@@ -116,7 +118,7 @@ public class Main {
             ArrayList<String> verboseList = new ArrayList<>();
 
             while (deck.getNumCards() != 0) {
-                System.out.println("1");
+
                 for (Player gamer : _gamers) {
                     if (gamer == null) {
                         break;
@@ -299,7 +301,7 @@ public class Main {
         }
 
     }
-    public static void setTopTen (Player winner){
+    public static void setTopTen (Player winner) throws RuntimeException {
         try {
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
@@ -369,5 +371,9 @@ public class Main {
                     "1 - Player Count 2 - Round Count 3 - First player name  " +
                     "4 - Second Player name Third Player name Fourth Player name");
         }
+    }
+
+    public static boolean takeVerboseValue(String args){
+        return args.toLowerCase().equals("true");
     }
 }
