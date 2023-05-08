@@ -24,10 +24,11 @@ public class HumanPlayer extends Player{
             try {
                 System.out.println("Please enter an index to throw the card(1,2,3,4)");
                 int user= Integer.parseInt(sc.nextLine());
-                if(user==1 || user==2|| user==3|| user==4){
-                    index=user;
-                    return this.getHand().get(index-1);
+                if((user==1 || user==2|| user==3|| user==4) && user<=this.getHand().size()){
+                    index = user;
                 }
+                return this.getHand().get(index - 1);
+
             }catch(Exception e){
                 System.out.println("Please enter a valid intiger number");
                 this.showHand();

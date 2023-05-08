@@ -1,9 +1,12 @@
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    static ArrayList<int> gamersScores;
+    static Player[] _gamers ;
     static int roundCount;
     static ArrayList<Card> card;
     static int playerCount = 0;
@@ -26,147 +29,193 @@ public class Main {
         System.out.println("-- Welcome to Mişti Game --");
 
         while (true) {
+
             getPlayerCount(args[0]); // how many player will play
 
             if (playerCount == 4) {
-                System.out.println("4");
+
                 break;
             } else if (playerCount == 2) {
-                System.out.println("2");
+
                 break;
             } else {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
+
         checkFile(args[1]);
 
         String[] gamersName = {firstGamerName, secondGamerName, thirdGamerName, forthGamerName};
         String[] gamersCategories = {firstGamerCategory, secondGamerCategory, thirdGamerCategory, forthGamerCategory};
-        Player[] _gamers = {_firstGamer, _secondGamer, _thirdGamer, _fortGamer};
+        _gamers = new Player[]{_firstGamer, _secondGamer, _thirdGamer, _fortGamer};
 
-        try {
-            getRoundCount(args[2]);
-        } catch (ParametersError e) {
-            e.getMessage();
-        }
+        getRoundCount(args[2]);
 
         int i = 0;
 
         for (String g : gamersName) {
             try {
-                int x = (i / 2);
-                gamersName[x] = args[i + 3]; // taking players name
-                System.out.println(args[i + 3] + " args[ " + (i + 3) + "]");
-                gamersCategories[x] = args[i + 4]; // to choose players category, we need to take this information
-                System.out.println(args[i + 4] + " args[ " + (i + 4) + "]");
-                checkPlayerCategory(gamersCategories[x]);
 
-                if (gamersCategories[x].equals("HUMAN"))
-                    humanCounter++; // if HUMAN player are chosen, human counter are incase
-                switch (gamersCategories[x]) {
-                    case "HUMAN" -> _gamers[x] = new HumanPlayer(gamersName[x], card, 0, "HUMAN");
-                    case "EXPERT-BOTH" -> _gamers[x] = new ExpertPlayer(gamersName[x], card, 0, "EXPERT-BOTH");
-                    case "REGULAR-BOTH" -> _gamers[x] = new RegularPlayer(gamersName[x], card, 0, "REGULAR-BOTH");
-                    case "NOVICE-BOTH" -> _gamers[x] = new NovicePlayer(gamersName[x], card, 0, "NOVICE-BOTH");
+                gamersName[i/2] = args[i+4]; // taking players name
+
+                gamersCategories[i/2] = args[i+5]; // to choose players category, we need to take this information
+
+                checkPlayerCategory(gamersCategories[i/2]);
+
+                if (gamersCategories[i/2].equals("HUMAN"))
+                    humanCounter++; // if HUMAN player are chosen, human counter are increase
+                switch (gamersCategories[i/2]) {
+                    case "HUMAN" -> _gamers[i/2] = new HumanPlayer(gamersName[i/2], card, 0, "HUMAN");
+                    case "EXPERT-BOTH" -> _gamers[i/2] = new ExpertPlayer(gamersName[i/2], card, 0, "EXPERT-BOTH");
+                    case "REGULAR-BOTH" -> _gamers[i/2] = new RegularPlayer(gamersName[i/2], card, 0, "REGULAR-BOTH");
+                    case "NOVICE-BOTH" -> _gamers[i/2] = new NovicePlayer(gamersName[i/2], card, 0, "NOVICE-BOTH");
                 }
-                System.out.println(i + "i");
+
                 i += 2;
 
-                System.out.println(x + " x");
-                if ((x + 1) == playerCount) break; // the program create gamers as player count which entered in game as
+                if ((i/2) == playerCount) break; // the program create gamers as player count which entered in game as
 
             } catch (GamerCategoryException e) {
                 System.out.println("Error :  " + e.getMessage());
             } catch (ArrayIndexOutOfBoundsException e) {
                 try {
-                    throw new ParametersError("Please provide parameters correctly " +
-                            "1 - Player Count 2 - Round Count 3 - First player name  " +
-                            "4 - Second Player name Third Player name Fourth Player name");
+                    throw new ParametersError();
                 } catch (ParametersError ex) {
                     ex.getMessage();
                 }
             }
         }
 
+        System.out.println("Our Gamer are : ");
+        int a = 1;
         for (Player p : _gamers) {
             try {
-                System.out.println(p.getName() + " " + p.getHand() + " " + p.getScore() + " " + p.getLevel());
+                System.out.println(String.valueOf(a) + p.getName() + " " + p.getHand() + " " + p.getScore() + " " + p.getLevel());
+                a ++ ;
             } catch (NullPointerException e) {
-                System.out.println("null");
                 break;
             }
         }
 
-        // just example
-        // Player winner = new NovicePlayer("SIRAK",card,130,"EXPERT-BOTH");
-        /* At the end of the game */
-        //setTopTen(winner);
+        boolean verbose = takeVerboseValue(args[3]); /// kod testi için oluşturuldu.
+        if(!verbose){
+            System.out.println("Yanlış");
+        }
+        //// oyun başlangıcı
 
-/*        ArrayList<Card> card1= new ArrayList<>();
-        ArrayList<Card> card2= new ArrayList<>();
-        ArrayList<Card> card3= new ArrayList<>();
-        ArrayList<Card> card4= new ArrayList<>();
-        Player player1= new HumanPlayer("a",card1,0,"HUMAN");
-        Player player2= new ExpertPlayer("B",card2,0,"Expert");
-        Player player3= new RegularPlayer("C",card3,0,"regular");
-        Player player4= new NovicePlayer("D",card4,0,"novice");
-        Player[] _gamers={player1,player2,player3,player4};*/
-        //// oyun başlangıcı taslağı
-
-        Deck deck = new Deck();
-        deck.shuffle();
-        deck.cut();
-        ArrayList<Card> board = new ArrayList<>(4);
-        board = deck.deal(4);
-        ExpertPlayer.throwed = board;
-        Player.topcard = board.get(3);
         try {
+            Deck deck = new Deck(); // burda kart ekleme dosyası eklenince dosyayı parametre olarak vericez !!
+            deck.shuffle();
+            deck.cut();
+            ArrayList<Card> board = new ArrayList<>(4);
+            board = deck.deal(4);
+            ExpertPlayer.throwed = new ArrayList<>();
+            ExpertPlayer.throwed.addAll(board);
+            Player.topcard = board.get(3);
+            int hand_number = 0;
+            ArrayList<String> verboseList = new ArrayList<>();
+
             while (deck.getNumCards() != 0) {
+
                 for (Player gamer : _gamers) {
                     if (gamer == null) {
                         break;
                     }
-                    gamer.setHand(deck.deal(4));
+                    gamer.setHand(deck.deal(4));    // düzelt
                 }
-                while (_gamers[_gamers.length - 1].getHand().size() != 0) {
+                hand_number += 1;
+                /// dosyaya handi ve ellerdeki kartları ve scoreları yazdır.
+                verboseList.add("HAND " + hand_number);
+                for (Player gamer : _gamers) {
+                    if (gamer == null) break;
+                    verboseList.add("; " + gamer.getName() + ":  " + gamer.getHand().toString() + "  Score " + gamer.getScore());
+                }
+                verboseList.add("\n");
+                int turn_number = 0;
+                while (_gamers[0].getHand().size() != 0) {
+
+                    turn_number += 1;
+                    ///turnu dosyaya yazdır sonra kartları listede tut ve kartrları elsonunda bununyanına yazdır ve listeyi boşalt.
+                    verboseList.add(turn_number + ".");
+
+                    ArrayList<Card> cardList = new ArrayList<>();
                     for (Player gamer : _gamers) {
+
                         if (gamer == null) {
                             break;
                         }
+
                         showBoard(board);
-                        Card throwcard = gamer.playCard();
-                        if (Player.topcard != null) {
-                            if (throwcard.getCardFace().equals(Player.topcard.getCardFace())) {
+
+                        Card throwCard = gamer.playCard();
+                        cardList.add(throwCard);
+
+                        if (Player.topcard == null) {
+
+                            System.out.print(throwCard.toString() + " played  "+ gamer.getName() +"\n");
+                            board.add(throwCard);
+                            Player.topcard = throwCard;
+                            ExpertPlayer.throwed.add(throwCard);
+                            gamer.getHand().remove(throwCard);
+
+                        } else {
+
+                            if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
                                 if (board.size() == 1) {
                                     System.out.print("MİŞTİ");
-                                    gamer.setScore(gamer.getScore() + 10 + throwcard.getPoints() + Player.topcard.getPoints());
-                                    ExpertPlayer.throwed.add(throwcard);
+                                    gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
+                                    ExpertPlayer.throwed.add(throwCard);
                                     Player.topcard = null;
                                     board.clear();
-                                    gamer.getHand().remove(throwcard);
+                                    gamer.getHand().remove(throwCard);
+                                } else {
+                                    System.out.println("you got all the cards at the board");
+                                    for (Card card : board) {
+                                        gamer.setScore(gamer.getScore() + card.getPoints());
+                                    }
+                                    gamer.setScore(gamer.getScore() + throwCard.getPoints());
+                                    Player.topcard = null;
+                                    ExpertPlayer.throwed.add(throwCard);
+                                    board.clear();
+                                    gamer.getHand().remove(throwCard);
                                 }
-                            } else if (throwcard.getCardFace().equals(Player.topcard.getCardFace()) || throwcard.getCardFace().equals("JACK")) {
-                                System.out.print("you got all the cards at the board");
+
+                            } else if (throwCard.getCardFace().equals("JACK")) { // kartları dosyadan okumaya başlayınca burası değişecek
+
+                                System.out.println("you got all the cards at the board");
                                 for (Card card : board) {
                                     gamer.setScore(gamer.getScore() + card.getPoints());
                                 }
-                                gamer.setScore(gamer.getScore() + throwcard.getPoints());
+                                gamer.setScore(gamer.getScore() + throwCard.getPoints());
                                 Player.topcard = null;
-                                ExpertPlayer.throwed.add(throwcard);
+                                ExpertPlayer.throwed.add(throwCard);
                                 board.clear();
-                                gamer.getHand().remove(throwcard);
+                                gamer.getHand().remove(throwCard);
+
                             } else {
-                                System.out.print(throwcard.toString() + " played by player\n");
-                                board.add(throwcard);
-                                Player.topcard = throwcard;
-                                ExpertPlayer.throwed.add(throwcard);
-                                gamer.getHand().remove(throwcard);  // BURASI BİTİNCE THROWEDA AYNI KARTI İKİ KERE EKLİYOR
+                                System.out.print(throwCard.toString() + " played by "+gamer.getName()+"\n");
+                                board.add(throwCard);
+                                Player.topcard = throwCard;
+                                ExpertPlayer.throwed.add(throwCard);
+                                gamer.getHand().remove(throwCard);
                             }
                         }
                     }
+
+                    verboseList.add(" " + cardList.toString() + "\n");
+                    cardList.clear();
                 }
             }
-        } catch (Exception e) {
+            // verbose mode true ise dosyayı yazdır.
+            if (verbose) {
+                for (String string : verboseList) {
+                    System.out.println(string);
+                }
+            }
+        } catch (NullPointerException nullPointerException){
+            System.out.println("the system catch null parameter ");
+        }
+        catch (Exception e) {
             System.out.println("something went wrong with the game please start the game again");
         }
 
@@ -181,40 +230,46 @@ public class Main {
                 }
             } catch (NullPointerException A) {
                 break;
+
             }
         }
-         for (Player p : _gamers) {
-             try {
-                 System.out.println(p.getName() + "   " + p.getScore());
-             } catch (NullPointerException e) {
-                 break;
-             }
-         }
-          //setTopTen(_gamers[0]);
+        for (Player p : _gamers) {
+            try {
+                System.out.println(p.getName() + "   " + p.getScore());
+            } catch (NullPointerException e) {
+                break;
+            }
+        }
 
-
-
+        System.out.println("!!! congratulations  " + _gamers[0].getName() + " !!!");
+        setTopTen(_gamers[0]);
 
     }
     public static void showBoard (ArrayList < Card > board) {
         if (board.size() != 0) {
+            System.out.println("*******************************");
             System.out.print("board:\n");
+            System.out.println("*******************************");
             for (Card card : board) {
                 System.out.print(card.toString() + "  ");
             }
         } else {
-            System.out.print("board is empty");
+            System.out.println("*******************************");
+            System.out.println("     ");
+            System.out.println("*******************************");
         }
         System.out.print("\n");
     }
     public static void getPlayerCount (String args){
-
-        while (true) {
+        try {
+            playerCount = Integer.parseInt(args.trim());
+        } catch (Exception e) {
+            System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
             try {
-                playerCount = Integer.parseInt(args.trim());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                ex.getMessage();
+                System.exit(1);
             }
         }
     }
@@ -241,11 +296,20 @@ public class Main {
             }
         } catch (FileNotFoundException f){
             f.getMessage();
+            System.exit(1);
         }
 
     }
-    public static void setTopTen (Player winner){
+    public static void setTopTen (Player winner) throws RuntimeException {
+        FileWriter writer = null;
         try {
+            File file = new File("Score.txt");
+            if (!file.exists()){
+                writer = new FileWriter(file);
+                for (int p = 0 ; p <= 10 ; p++)  {
+                    writer.write("_" + "," + "_" + "," + "0"+ "\n");
+                }
+            }
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
             int i = 0;
@@ -282,8 +346,6 @@ public class Main {
                     break;
                 }
             }
-
-            FileWriter writer = null;
             try {
                 writer = new FileWriter("Score.txt");
                 for (Player p : winners) {
@@ -300,19 +362,38 @@ public class Main {
                     throw new RuntimeException(e);
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static void getRoundCount (String args)  throws ParametersError {
+    public static void getRoundCount (String args)   {
         try {
             roundCount = Integer.parseInt(args.trim());
-        } catch (Exception e) {
-            System.err.println("Invalid parameter please provide Integer value");
-            System.exit(1);
-            throw new ParametersError("Please provide parameters correctly " +
-                    "1 - Player Count 2 - Round Count 3 - First player name  " +
-                    "4 - Second Player name Third Player name Fourth Player name");
+        } catch (InputMismatchException e) {
+            System.err.println("Invalid parameter please provide Integer value for count number");
+            try {
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                ex.getMessage();
+                System.exit(1);
+            }
+        }
+    }
+
+    public static boolean takeVerboseValue(String args){
+        if(args.toLowerCase().equals("true")) {
+            return true;
+        } else if (args.toLowerCase().equals("false")) {
+            return false;
+        } else {
+            try {
+                throw new ParametersError();
+            } catch (ParametersError e) {
+                System.err.println("Invalid parameter please provide correct value for verbose mode");
+                System.exit(1);
+                throw new RuntimeException(e);
+
+            }
         }
     }
 }

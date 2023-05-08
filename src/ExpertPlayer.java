@@ -46,14 +46,12 @@ public class ExpertPlayer extends BothPlayer{
                     index+=1;
                 }
                 cardindex= repeat.indexOf(Collections.max(repeat));
-            }//there is no card in throwed card or matched card and there are more than 1 card in the hand
-            else{
+            }/*else if (this.getHand().size()!=0){
                 cardindex = r.nextInt(this.getHand().size());
-            }
+            }*/
             return this.getHand().get(cardindex);
         }catch(Exception e){
-            System.out.println("there is no card in this player's hand");
-            return null;
+            return this.getHand().get(0);
         }
     }
 }
