@@ -24,8 +24,7 @@ public class RegularPlayer extends BothPlayer{
             }
             return this.getHand().get(index);
         }catch(Exception e){
-            System.out.println("there is no card in this player's hand");
-            return null;
+            return this.getHand().get(0);
         }
     }
 
