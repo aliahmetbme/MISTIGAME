@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    static ArrayList<int> gamersScores;
+    static Player[] _gamers ;
     static int roundCount;
     static ArrayList<Card> card;
     static int playerCount = 0;
@@ -25,34 +27,29 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("-- Welcome to Mişti Game --");
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
 
             getPlayerCount(args[0]); // how many player will play
 
             if (playerCount == 4) {
-                System.out.println("4");
+
                 break;
             } else if (playerCount == 2) {
-                System.out.println("2");
+
                 break;
             } else {
                 System.out.println("\nPlease enter correct player number  2 or 4");
             }
         }
+
         checkFile(args[1]);
 
         String[] gamersName = {firstGamerName, secondGamerName, thirdGamerName, forthGamerName};
         String[] gamersCategories = {firstGamerCategory, secondGamerCategory, thirdGamerCategory, forthGamerCategory};
-        Player[] _gamers = {_firstGamer, _secondGamer, _thirdGamer, _fortGamer};
+        _gamers = new Player[]{_firstGamer, _secondGamer, _thirdGamer, _fortGamer};
 
-        try {
-            getRoundCount(args[2]);
-        } catch (ParametersError e) {
-            e.getMessage();
-            System.exit(1);
-        }
+        getRoundCount(args[2]);
 
         int i = 0;
 
@@ -82,18 +79,19 @@ public class Main {
                 System.out.println("Error :  " + e.getMessage());
             } catch (ArrayIndexOutOfBoundsException e) {
                 try {
-                    throw new ParametersError("Please provide parameters correctly " +
-                            "1 - Player Count 2 - Round Count 3 - First player name  " +
-                            "4 - Second Player name Third Player name Fourth Player name");
+                    throw new ParametersError();
                 } catch (ParametersError ex) {
                     ex.getMessage();
                 }
             }
         }
 
+        System.out.println("Our Gamer are : ");
+        int a = 1;
         for (Player p : _gamers) {
             try {
-                System.out.println(p.getName() + " " + p.getHand() + " " + p.getScore() + " " + p.getLevel());
+                System.out.println(String.valueOf(a) + p.getName() + " " + p.getHand() + " " + p.getScore() + " " + p.getLevel());
+                a ++ ;
             } catch (NullPointerException e) {
                 break;
             }
@@ -123,7 +121,7 @@ public class Main {
                     if (gamer == null) {
                         break;
                     }
-                    gamer.setHand(deck.deal(4));
+                    gamer.setHand(deck.deal(4));    // düzelt
                 }
                 hand_number += 1;
                 /// dosyaya handi ve ellerdeki kartları ve scoreları yazdır.
@@ -140,9 +138,8 @@ public class Main {
                     ///turnu dosyaya yazdır sonra kartları listede tut ve kartrları elsonunda bununyanına yazdır ve listeyi boşalt.
                     verboseList.add(turn_number + ".");
 
-                    ArrayList<Card> cardlist = new ArrayList<>();
+                    ArrayList<Card> cardList = new ArrayList<>();
                     for (Player gamer : _gamers) {
-
 
                         if (gamer == null) {
                             break;
@@ -150,69 +147,69 @@ public class Main {
 
                         showBoard(board);
 
-                        Card throwcard = gamer.playCard();
-                        cardlist.add(throwcard);
+                        Card throwCard = gamer.playCard();
+                        cardList.add(throwCard);
 
                         if (Player.topcard == null) {
-                            System.out.println("5");
-                            System.out.print(throwcard.toString() + " played  "+ gamer.getName() +"\n");
-                            board.add(throwcard);
-                            Player.topcard = throwcard;
-                            ExpertPlayer.throwed.add(throwcard);
-                            gamer.getHand().remove(throwcard);
-                        } else if (Player.topcard != null) {
-                            System.out.println("6");
-                            if (throwcard.getCardFace().equals(Player.topcard.getCardFace())) {
+
+                            System.out.print(throwCard.toString() + " played  "+ gamer.getName() +"\n");
+                            board.add(throwCard);
+                            Player.topcard = throwCard;
+                            ExpertPlayer.throwed.add(throwCard);
+                            gamer.getHand().remove(throwCard);
+
+                        } else {
+
+                            if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
                                 if (board.size() == 1) {
                                     System.out.print("MİŞTİ");
-                                    gamer.setScore(gamer.getScore() + 10 + throwcard.getPoints() + Player.topcard.getPoints());
-                                    ExpertPlayer.throwed.add(throwcard);
+                                    gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
+                                    ExpertPlayer.throwed.add(throwCard);
                                     Player.topcard = null;
                                     board.clear();
-                                    gamer.getHand().remove(throwcard);
+                                    gamer.getHand().remove(throwCard);
                                 } else {
-                                    System.out.print("you got all the cards at the board");
+                                    System.out.println("you got all the cards at the board");
                                     for (Card card : board) {
                                         gamer.setScore(gamer.getScore() + card.getPoints());
                                     }
-                                    gamer.setScore(gamer.getScore() + throwcard.getPoints());
+                                    gamer.setScore(gamer.getScore() + throwCard.getPoints());
                                     Player.topcard = null;
-                                    ExpertPlayer.throwed.add(throwcard);
+                                    ExpertPlayer.throwed.add(throwCard);
                                     board.clear();
-                                    gamer.getHand().remove(throwcard);
+                                    gamer.getHand().remove(throwCard);
                                 }
 
-                            } else if (throwcard.getCardFace().equals("JACK")) { // kartları dosyadan okumaya başlayınca burası değişecek
+                            } else if (throwCard.getCardFace().equals("JACK")) { // kartları dosyadan okumaya başlayınca burası değişecek
 
-                                System.out.print("you got all the cards at the board");
+                                System.out.println("you got all the cards at the board");
                                 for (Card card : board) {
                                     gamer.setScore(gamer.getScore() + card.getPoints());
                                 }
-                                gamer.setScore(gamer.getScore() + throwcard.getPoints());
+                                gamer.setScore(gamer.getScore() + throwCard.getPoints());
                                 Player.topcard = null;
-                                ExpertPlayer.throwed.add(throwcard);
+                                ExpertPlayer.throwed.add(throwCard);
                                 board.clear();
-                                gamer.getHand().remove(throwcard);
+                                gamer.getHand().remove(throwCard);
 
                             } else {
-                                System.out.print(throwcard.toString() + " played by "+gamer.getName()+"\n");
-                                board.add(throwcard);
-                                Player.topcard = throwcard;
-                                ExpertPlayer.throwed.add(throwcard);
-                                gamer.getHand().remove(throwcard);
+                                System.out.print(throwCard.toString() + " played by "+gamer.getName()+"\n");
+                                board.add(throwCard);
+                                Player.topcard = throwCard;
+                                ExpertPlayer.throwed.add(throwCard);
+                                gamer.getHand().remove(throwCard);
                             }
                         }
                     }
 
-                    verboseList.add(" " + cardlist.toString() + "\n");
-                    cardlist.clear();
+                    verboseList.add(" " + cardList.toString() + "\n");
+                    cardList.clear();
                 }
             }
             // verbose mode true ise dosyayı yazdır.
             if (verbose) {
                 for (String string : verboseList) {
                     System.out.println(string);
-
                 }
             }
         } catch (NullPointerException nullPointerException){
@@ -221,7 +218,6 @@ public class Main {
         catch (Exception e) {
             System.out.println("something went wrong with the game please start the game again");
         }
-
 
         for (int x = 0; x < _gamers.length - 1; x++) {
             try {
@@ -259,19 +255,21 @@ public class Main {
             }
         } else {
             System.out.println("*******************************");
-            System.out.print("     ");
+            System.out.println("     ");
             System.out.println("*******************************");
         }
         System.out.print("\n");
     }
     public static void getPlayerCount (String args){
-
-        while (true) {
+        try {
+            playerCount = Integer.parseInt(args.trim());
+        } catch (Exception e) {
+            System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
             try {
-                playerCount = Integer.parseInt(args.trim());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                ex.getMessage();
+                System.exit(1);
             }
         }
     }
@@ -298,12 +296,21 @@ public class Main {
             }
         } catch (FileNotFoundException f){
             f.getMessage();
+            System.exit(1);
         }
 
     }
     public static void setTopTen (Player winner) throws RuntimeException {
+        FileWriter writer = null;
         try {
-            Scanner scanner = new Scanner(new BufferedReader(new FileReader(System.getProperty("user.dir") + File.separator + "Score.txt")));
+            File file = new File("Score.txt");
+            if (!file.exists()){
+                writer = new FileWriter(file);
+                for (int p = 0 ; p <= 10 ; p++)  {
+                    writer.write("_" + "," + "_" + "," + "0"+ "\n");
+                }
+            }
+            Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
             int i = 0;
 
@@ -339,10 +346,8 @@ public class Main {
                     break;
                 }
             }
-
-            FileWriter writer = null;
             try {
-                writer = new FileWriter(System.getProperty("user.dir") + File.separator + "Score.txt");
+                writer = new FileWriter("Score.txt");
                 for (Player p : winners) {
                     if (p == null) break;
                     writer.write(p.getName() + "," + p.getLevel() + "," + String.valueOf(p.getScore() + "\n"));
@@ -357,23 +362,38 @@ public class Main {
                     throw new RuntimeException(e);
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static void getRoundCount (String args)  throws ParametersError {
+    public static void getRoundCount (String args)   {
         try {
             roundCount = Integer.parseInt(args.trim());
-        } catch (Exception e) {
-            System.err.println("Invalid parameter please provide Integer value");
-            System.exit(1);
-            throw new ParametersError("Please provide parameters correctly " +
-                    "1 - Player Count 2 - Round Count 3 - First player name  " +
-                    "4 - Second Player name Third Player name Fourth Player name");
+        } catch (InputMismatchException e) {
+            System.err.println("Invalid parameter please provide Integer value for count number");
+            try {
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                ex.getMessage();
+                System.exit(1);
+            }
         }
     }
 
     public static boolean takeVerboseValue(String args){
-        return args.toLowerCase().equals("true");
+        if(args.toLowerCase().equals("true")) {
+            return true;
+        } else if (args.toLowerCase().equals("false")) {
+            return false;
+        } else {
+            try {
+                throw new ParametersError();
+            } catch (ParametersError e) {
+                System.err.println("Invalid parameter please provide correct value for verbose mode");
+                System.exit(1);
+                throw new RuntimeException(e);
+
+            }
+        }
     }
 }
