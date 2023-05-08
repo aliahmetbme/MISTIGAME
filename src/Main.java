@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-    static ArrayList<int> gamersScores;
+    static File pointFile;
     static Player[] _gamers ;
     static int roundCount;
     static ArrayList<Card> card;
@@ -104,7 +104,7 @@ public class Main {
         //// oyun başlangıcı
 
         try {
-            Deck deck = new Deck(); // burda kart ekleme dosyası eklenince dosyayı parametre olarak vericez !!
+            Deck deck = new Deck(pointFile); // burda kart ekleme dosyası eklenince dosyayı parametre olarak vericez !!
             deck.shuffle();
             deck.cut();
             ArrayList<Card> board = new ArrayList<>(4);
@@ -128,7 +128,7 @@ public class Main {
                 verboseList.add("HAND " + hand_number);
                 for (Player gamer : _gamers) {
                     if (gamer == null) break;
-                    verboseList.add("; " + gamer.getName() + ":  " + gamer.getHand().toString() + "  Score " + gamer.getScore());
+                    verboseList.add(" " + gamer.getName() + ":  " + gamer.getHand().toString() + "  Score " + gamer.getScore());
                 }
                 verboseList.add("\n");
                 int turn_number = 0;
@@ -180,7 +180,7 @@ public class Main {
                                     gamer.getHand().remove(throwCard);
                                 }
 
-                            } else if (throwCard.getCardFace().equals("JACK")) { // kartları dosyadan okumaya başlayınca burası değişecek
+                            } else if (throwCard.getCardFace().equals("J")) { // kartları dosyadan okumaya başlayınca burası değişecek
 
                                 System.out.println("you got all the cards at the board");
                                 for (Card card : board) {
@@ -249,12 +249,14 @@ public class Main {
         if (board.size() != 0) {
             System.out.println("*******************************");
             System.out.print("board:\n");
-            System.out.println("*******************************");
             for (Card card : board) {
                 System.out.print(card.toString() + "  ");
             }
+            System.out.println();
+            System.out.println("*******************************");
         } else {
             System.out.println("*******************************");
+            System.out.print("board:\n");
             System.out.println("     ");
             System.out.println("*******************************");
         }
@@ -286,9 +288,9 @@ public class Main {
     }
     public static void checkFile (String args) {
         String pointFolderName = args.trim();
-        File file = new File(pointFolderName + ".txt");
+        pointFile = new File(pointFolderName + ".txt");
         try {
-            if (file.exists()) {
+            if (pointFile.exists()) {
                 System.out.println("The file exists.");
             } else {
                 System.out.println("The file does not exist.");

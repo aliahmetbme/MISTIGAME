@@ -7,28 +7,22 @@ import java.util.Scanner;
 
 public class Deck {
     private ArrayList<Card> cards;
-    private String filePath;
+    private File pointFile;
 
-    public Deck() {
+    public Deck(File pointFile) {
+
+        this.pointFile = pointFile;
+
         cards = new ArrayList<>();
-        String[] suits = {"HEARTS", "DIAMONDS", "CLUBS", "SPADES"};
-        String[] cardFaces = {"ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING"};
-        int[] points = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
+        cards = readCardsFromFile();
 
-        for (String suit : suits) {
-            for (int i = 0; i < cardFaces.length; i++) {
-                Card card = new Card(suit, cardFaces[i], points[i]);
-                cards.add(card);
-            }
-        }
     }
-    
-    
- public static ArrayList<Card> readCardsFromFile(String filePath) {
+
+    public ArrayList<Card> readCardsFromFile() {
         ArrayList<Card> cards = new ArrayList<>();
 
         try {
-            File file = new File(filePath);
+            File file = getPointFile();
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {
@@ -50,9 +44,6 @@ public class Deck {
     }
 
 
-    public Deck(String filePath) {
-        cards = readCardsFromFile(filePath);
-    }
 
     
     public void shuffle() {Collections.shuffle(cards);}
@@ -81,10 +72,8 @@ public class Deck {
         return cards.size();
     }
 
-    public void printDeck() {
-        for (Card card : cards) {
-            System.out.println(card.toString());
-        }
+    public File getPointFile() {
+        return pointFile;
     }
 
 
