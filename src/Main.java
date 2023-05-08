@@ -303,7 +303,7 @@ public class Main {
     }
     public static void setTopTen (Player winner) throws RuntimeException {
         try {
-            Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
+            Scanner scanner = new Scanner(new BufferedReader(new FileReader(System.getProperty("user.dir") + File.separator + "Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
             int i = 0;
 
@@ -342,7 +342,7 @@ public class Main {
 
             FileWriter writer = null;
             try {
-                writer = new FileWriter("Score.txt");
+                writer = new FileWriter(System.getProperty("user.dir") + File.separator + "Score.txt");
                 for (Player p : winners) {
                     if (p == null) break;
                     writer.write(p.getName() + "," + p.getLevel() + "," + String.valueOf(p.getScore() + "\n"));
