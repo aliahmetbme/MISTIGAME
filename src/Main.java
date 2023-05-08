@@ -57,9 +57,10 @@ public class Main {
 
         for (String g : gamersName) {
             try {
-                System.out.println("Please enter name");
+                System.out.println("Please enter" + (i+1) +" name");
                 gamersName[i] = scanner.next(); // taking players name
-                System.out.println("Please enter category");
+                System.out.println();
+                System.out.println("Please enter" + (i+1) +" category");
                 gamersCategories[i] = scanner.next(); // to choose players category, we need to take this information
 
                 checkPlayerCategory(gamersCategories[i]);
