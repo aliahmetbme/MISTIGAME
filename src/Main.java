@@ -74,8 +74,8 @@ public class Main {
                 }
 
                 i += 2;
-                System.out.println(i/2 + 1);
-                if ((i/2 + 1) == playerCount) break; // the program create gamers as player count which entered in game as
+
+                if ((i/2) == playerCount) break; // the program create gamers as player count which entered in game as
 
             } catch (GamerCategoryException e) {
                 System.out.println("Error :  " + e.getMessage());
@@ -300,7 +300,7 @@ public class Main {
         }
 
     }
-    public static void setTopTen (Player winner){
+    public static void setTopTen (Player winner) throws RuntimeException {
         try {
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
