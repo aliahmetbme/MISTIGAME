@@ -7,7 +7,7 @@ public class Main {
     static File pointFile;
     static Player[] _gamers ;
     static int roundCount;
-    static ArrayList<Card> card;
+    static ArrayList<Card> card = new ArrayList<Card>(4);
     static int playerCount = 0;
     static int humanCounter = 0;
     static String firstGamerName;
@@ -163,7 +163,7 @@ public class Main {
                              if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
                                  if (board.size() == 1) {
                                      System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
-                                     System.out.print("MİŞTİ");
+                                     System.out.print("MİŞTİ\n");
                                      gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
                                      ExpertPlayer.throwed.add(throwCard);
                                      Player.topcard = null;
@@ -223,12 +223,14 @@ public class Main {
                      System.out.println(string);
                  }
              }
+
+             showBoard(board);
+
          } catch (NullPointerException nullPointerException) {
              System.out.println("the system catch null parameter ");
          } catch (Exception e) {
              System.out.println("something went wrong with the game please start the game again");
          }
-
 
          for (int x = 0; x < _gamers.length - 1; x++) {
              try {
@@ -244,6 +246,7 @@ public class Main {
 
              }
          }
+
          for (Player p : _gamers) {
              try {
                  System.out.println(p.getName() + "   " + p.getScore());
@@ -327,7 +330,6 @@ public class Main {
                         System.err.println(ex.getMessage());
                         System.exit(1);
                     }
-
                 }
             }
     }

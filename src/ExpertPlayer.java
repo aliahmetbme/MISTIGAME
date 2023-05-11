@@ -47,21 +47,21 @@ public class ExpertPlayer extends BothPlayer{
                     }
                     index+=1;
                 }
-                int cardrepeat= Collections.max(repeat);
-                ArrayList<Card> scorecard=new ArrayList<>();
-                for(Integer i:repeat){
-                    if(i==cardrepeat){
-                        scorecard.add(this.getHand().get(repeat.indexOf(i)));
-                    }
-                }
-                int min = scorecard.get(0).getPoints();
-                for (Card card : scorecard){
-                    if (card.getPoints()<min){
-                        min=card.getPoints();
-                        throw_card=card;
-                    }
-                }
-                return throw_card;
+//                int cardrepeat= Collections.max(repeat);
+//                ArrayList<Card> scorecard=new ArrayList<>();
+//                for(Integer i:repeat){
+//                    if(i==cardrepeat){
+//                        scorecard.add(this.getHand().get(repeat.indexOf(i)));
+//                    }
+//                }
+//                int min = scorecard.get(0).getPoints();
+//                for (Card card : scorecard){
+//                    if (card.getPoints()<min){
+//                        min=card.getPoints();
+//                        throw_card=card;
+//                    }
+//                }
+               // return throw_card;
 
             }
             else{
@@ -77,4 +77,6 @@ public class ExpertPlayer extends BothPlayer{
             return this.getHand().get(0);
         }
     }
+
+
 }

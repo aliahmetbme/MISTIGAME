@@ -45,7 +45,6 @@ public abstract class Player {
 
     public Card playCard(){return null;};
 
-
     public void setLevel(String level) {
         this.level = level;
     }
