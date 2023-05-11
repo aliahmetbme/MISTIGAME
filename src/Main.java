@@ -146,7 +146,7 @@ public class Main {
 
                          if (Player.topcard == null) {
 
-                             System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n");
+                             System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
                              board.add(throwCard);
                              Player.topcard = throwCard;
                              ExpertPlayer.throwed.add(throwCard);
@@ -156,6 +156,7 @@ public class Main {
 
                              if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
                                  if (board.size() == 1) {
+                                     System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
                                      System.out.print("MİŞTİ");
                                      gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
                                      ExpertPlayer.throwed.add(throwCard);
@@ -163,7 +164,8 @@ public class Main {
                                      board.clear();
                                      gamer.getHand().remove(throwCard);
                                  } else {
-                                     System.out.println("you got all the cards at the board");
+                                     System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
+                                     System.out.println("you got all the cards at the board\n");
                                      for (Card card : board) {
                                          gamer.setScore(gamer.getScore() + card.getPoints());
                                      }
@@ -175,8 +177,8 @@ public class Main {
                                  }
 
                              } else if (throwCard.getCardFace().equals("J")) { // kartları dosyadan okumaya başlayınca burası değişecek
-
-                                 System.out.println("you got all the cards at the board");
+                                 System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
+                                 System.out.println("you got all the cards at the board\n");
                                  for (Card card : board) {
                                      gamer.setScore(gamer.getScore() + card.getPoints());
                                  }
@@ -187,7 +189,7 @@ public class Main {
                                  gamer.getHand().remove(throwCard);
 
                              } else {
-                                 System.out.print(throwCard.toString() + " played by " + gamer.getName() + "\n");
+                                 System.out.print(throwCard.toString() + " played by " + gamer.getName() + "\n\n");
                                  board.add(throwCard);
                                  Player.topcard = throwCard;
                                  ExpertPlayer.throwed.add(throwCard);
@@ -412,7 +414,6 @@ public class Main {
             }
         }
     }
-
     public static boolean takeVerboseValue(String args){
         if(args.toLowerCase().equals("true")) {
             return true;
