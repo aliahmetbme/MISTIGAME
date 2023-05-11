@@ -60,8 +60,9 @@ public class Main {
 
                 checkPlayerCategory(gamersCategories[i / 2]);
 
-                if (gamersCategories[i / 2].equals("HUMAN"))
-                    humanCounter++; // if HUMAN player are chosen, human counter are increase
+                if (gamersCategories[i / 2].equals("HUMAN")) {
+                    humanCounter++;
+                }// if HUMAN player are chosen, human counter are increase
                 switch (gamersCategories[i / 2]) {
                     case "HUMAN" -> _gamers[i / 2] = new HumanPlayer(gamersName[i / 2], card, 0, "HUMAN");
                     case "EXPERT-BOTH" -> _gamers[i / 2] = new ExpertPlayer(gamersName[i / 2], card, 0, "EXPERT-BOTH");
@@ -319,7 +320,6 @@ public class Main {
             }
 
             if (humanCounter > 1) {
-                humanCounter--;  // because program have already warned gamers, human count are decreased
                 try {
                     throw new GamerCategoryException("You cannot choose HUMAN player more than one time");
                 } catch (GamerCategoryException e) {

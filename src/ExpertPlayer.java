@@ -20,9 +20,8 @@ public class ExpertPlayer extends BothPlayer{
     }*/
     @Override
     public Card playCard() {
-        Random r=new Random();
         int cardindex=-1;
-        Card throw_card = null;
+
         try {
             //if there is one card in the hand
             if (this.getHand().size()==1){
@@ -33,6 +32,34 @@ public class ExpertPlayer extends BothPlayer{
                     if (topcard.getCardFace().equals(card.getCardFace())) {
                         return card;
                     }
+                }
+                if (throwed.size()!=0){
+                    ArrayList<Integer> repeat = new ArrayList<Integer>(Collections.nCopies(this.getHand().size(), 0));
+                    int index=0;
+                    for (Card card : this.getHand()) {
+                        for(Card t_card:throwed) {
+                            if (t_card.getCardFace().equals(card.getCardFace())) {
+                                repeat.set(index, repeat.get(index) + 1);
+                            }
+                        }
+                        index+=1;
+                    }
+                    int cardrepeat = Collections.max(repeat);
+                    int minpoint= this.getHand().get(repeat.indexOf(cardrepeat)).getPoints();
+                    cardindex=repeat.indexOf(cardrepeat);
+                    for (int i=0;i<4;i++){
+                        if(repeat.get(i)==cardrepeat){
+                            if (this.getHand().get(i).getPoints()<minpoint){
+                                cardindex=i;
+                            }
+                        }
+                    }
+                }else{
+                    ArrayList<Integer> handpoints= new ArrayList<>();
+                    for( Card card: this.getHand()){
+                        handpoints.add(card.getPoints());
+                    }
+                    return this.getHand().get(handpoints.indexOf(Collections.min(handpoints)));
                 }
                 /// throwed ve puana göre kısmı ekle
             }//to check the repeated cards in the hand to throw
@@ -47,22 +74,16 @@ public class ExpertPlayer extends BothPlayer{
                     }
                     index+=1;
                 }
-//                int cardrepeat= Collections.max(repeat);
-//                ArrayList<Card> scorecard=new ArrayList<>();
-//                for(Integer i:repeat){
-//                    if(i==cardrepeat){
-//                        scorecard.add(this.getHand().get(repeat.indexOf(i)));
-//                    }
-//                }
-//                int min = scorecard.get(0).getPoints();
-//                for (Card card : scorecard){
-//                    if (card.getPoints()<min){
-//                        min=card.getPoints();
-//                        throw_card=card;
-//                    }
-//                }
-               // return throw_card;
-
+                int cardrepeat= Collections.max(repeat);
+                int minpoint= this.getHand().get(repeat.indexOf(cardrepeat)).getPoints();
+                cardindex=repeat.indexOf(cardrepeat);
+                for (int i=0;i<4;i++){
+                    if(repeat.get(i)==cardrepeat){
+                        if (this.getHand().get(i).getPoints()<minpoint){
+                            cardindex=i;
+                        }
+                    }
+                }
             }
             else{
                 ArrayList<Integer> handpoints= new ArrayList<>();
