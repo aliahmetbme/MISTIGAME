@@ -93,151 +93,152 @@ public class Main {
                 break;
             }
         }
-
+        int round = 1;
         //// oyun başlangıcı
+     while (roundCount >= round) {
+         try {
+             System.out.println("-- Welcome to Mişti Game "+round+"th round --");
+             Deck deck = new Deck(pointFile); // burda kart ekleme dosyası eklenince dosyayı parametre olarak vericez !!
+             deck.shuffle();
+             deck.cut();
+             ArrayList<Card> board = new ArrayList<>(4);
+             board = deck.deal(4);
+             ExpertPlayer.throwed = new ArrayList<>();
+             ExpertPlayer.throwed.addAll(board);
+             Player.topcard = board.get(3);
+             int hand_number = 0;
+             ArrayList<String> verboseList = new ArrayList<>();
 
-        try {
-            System.out.println("-- Welcome to Mişti Game --");
-            Deck deck = new Deck(pointFile); // burda kart ekleme dosyası eklenince dosyayı parametre olarak vericez !!
-            deck.shuffle();
-            deck.cut();
-            ArrayList<Card> board = new ArrayList<>(4);
-            board = deck.deal(4);
-            ExpertPlayer.throwed = new ArrayList<>();
-            ExpertPlayer.throwed.addAll(board);
-            Player.topcard = board.get(3);
-            int hand_number = 0;
-            ArrayList<String> verboseList = new ArrayList<>();
+             while (deck.getNumCards() != 0) {
 
-            while (deck.getNumCards() != 0) {
+                 for (Player gamer : _gamers) {
+                     if (gamer == null) {
+                         break;
+                     }
+                     gamer.setHand(deck.deal(4));    // düzelt
+                 }
+                 hand_number += 1;
+                 /// dosyaya handi ve ellerdeki kartları ve scoreları yazdır.
+                 verboseList.add("HAND " + hand_number);
+                 for (Player gamer : _gamers) {
+                     if (gamer == null) break;
+                     verboseList.add(" " + gamer.getName() + ":  " + gamer.getHand().toString() + "  Score " + gamer.getScore());
+                 }
+                 verboseList.add("\n");
+                 int turn_number = 0;
+                 while (_gamers[0].getHand().size() != 0) {
 
-                for (Player gamer : _gamers) {
-                    if (gamer == null) {
-                        break;
-                    }
-                    gamer.setHand(deck.deal(4));    // düzelt
-                }
-                hand_number += 1;
-                /// dosyaya handi ve ellerdeki kartları ve scoreları yazdır.
-                verboseList.add("HAND " + hand_number);
-                for (Player gamer : _gamers) {
-                    if (gamer == null) break;
-                    verboseList.add(" " + gamer.getName() + ":  " + gamer.getHand().toString() + "  Score " + gamer.getScore());
-                }
-                verboseList.add("\n");
-                int turn_number = 0;
-                while (_gamers[0].getHand().size() != 0) {
+                     turn_number += 1;
+                     ///turnu dosyaya yazdır sonra kartları listede tut ve kartrları elsonunda bununyanına yazdır ve listeyi boşalt.
+                     verboseList.add(turn_number + ".");
 
-                    turn_number += 1;
-                    ///turnu dosyaya yazdır sonra kartları listede tut ve kartrları elsonunda bununyanına yazdır ve listeyi boşalt.
-                    verboseList.add(turn_number + ".");
+                     ArrayList<Card> cardList = new ArrayList<>();
+                     for (Player gamer : _gamers) {
 
-                    ArrayList<Card> cardList = new ArrayList<>();
-                    for (Player gamer : _gamers) {
+                         if (gamer == null) {
+                             break;
+                         }
 
-                        if (gamer == null) {
-                            break;
-                        }
+                         showBoard(board);
 
-                        showBoard(board);
+                         Card throwCard = gamer.playCard();
+                         cardList.add(throwCard);
 
-                        Card throwCard = gamer.playCard();
-                        cardList.add(throwCard);
+                         if (Player.topcard == null) {
 
-                        if (Player.topcard == null) {
+                             System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n");
+                             board.add(throwCard);
+                             Player.topcard = throwCard;
+                             ExpertPlayer.throwed.add(throwCard);
+                             gamer.getHand().remove(throwCard);
 
-                            System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n");
-                            board.add(throwCard);
-                            Player.topcard = throwCard;
-                            ExpertPlayer.throwed.add(throwCard);
-                            gamer.getHand().remove(throwCard);
+                         } else {
 
-                        } else {
+                             if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
+                                 if (board.size() == 1) {
+                                     System.out.print("MİŞTİ");
+                                     gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
+                                     ExpertPlayer.throwed.add(throwCard);
+                                     Player.topcard = null;
+                                     board.clear();
+                                     gamer.getHand().remove(throwCard);
+                                 } else {
+                                     System.out.println("you got all the cards at the board");
+                                     for (Card card : board) {
+                                         gamer.setScore(gamer.getScore() + card.getPoints());
+                                     }
+                                     gamer.setScore(gamer.getScore() + throwCard.getPoints());
+                                     Player.topcard = null;
+                                     ExpertPlayer.throwed.add(throwCard);
+                                     board.clear();
+                                     gamer.getHand().remove(throwCard);
+                                 }
 
-                            if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
-                                if (board.size() == 1) {
-                                    System.out.print("MİŞTİ");
-                                    gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
-                                    ExpertPlayer.throwed.add(throwCard);
-                                    Player.topcard = null;
-                                    board.clear();
-                                    gamer.getHand().remove(throwCard);
-                                } else {
-                                    System.out.println("you got all the cards at the board");
-                                    for (Card card : board) {
-                                        gamer.setScore(gamer.getScore() + card.getPoints());
-                                    }
-                                    gamer.setScore(gamer.getScore() + throwCard.getPoints());
-                                    Player.topcard = null;
-                                    ExpertPlayer.throwed.add(throwCard);
-                                    board.clear();
-                                    gamer.getHand().remove(throwCard);
-                                }
+                             } else if (throwCard.getCardFace().equals("J")) { // kartları dosyadan okumaya başlayınca burası değişecek
 
-                            } else if (throwCard.getCardFace().equals("J")) { // kartları dosyadan okumaya başlayınca burası değişecek
+                                 System.out.println("you got all the cards at the board");
+                                 for (Card card : board) {
+                                     gamer.setScore(gamer.getScore() + card.getPoints());
+                                 }
+                                 gamer.setScore(gamer.getScore() + throwCard.getPoints());
+                                 Player.topcard = null;
+                                 ExpertPlayer.throwed.add(throwCard);
+                                 board.clear();
+                                 gamer.getHand().remove(throwCard);
 
-                                System.out.println("you got all the cards at the board");
-                                for (Card card : board) {
-                                    gamer.setScore(gamer.getScore() + card.getPoints());
-                                }
-                                gamer.setScore(gamer.getScore() + throwCard.getPoints());
-                                Player.topcard = null;
-                                ExpertPlayer.throwed.add(throwCard);
-                                board.clear();
-                                gamer.getHand().remove(throwCard);
+                             } else {
+                                 System.out.print(throwCard.toString() + " played by " + gamer.getName() + "\n");
+                                 board.add(throwCard);
+                                 Player.topcard = throwCard;
+                                 ExpertPlayer.throwed.add(throwCard);
+                                 gamer.getHand().remove(throwCard);
+                             }
+                         }
+                     }
 
-                            } else {
-                                System.out.print(throwCard.toString() + " played by " + gamer.getName() + "\n");
-                                board.add(throwCard);
-                                Player.topcard = throwCard;
-                                ExpertPlayer.throwed.add(throwCard);
-                                gamer.getHand().remove(throwCard);
-                            }
-                        }
-                    }
+                     verboseList.add(" " + cardList.toString() + "\n");
+                     cardList.clear();
+                 }
+             }
+             // verbose mode true ise dosyayı yazdır.
+             if (verbose) {
+                 for (String string : verboseList) {
+                     System.out.println(string);
+                 }
+             }
+         } catch (NullPointerException nullPointerException) {
+             System.out.println("the system catch null parameter ");
+         } catch (Exception e) {
+             System.out.println("something went wrong with the game please start the game again");
+         }
 
-                    verboseList.add(" " + cardList.toString() + "\n");
-                    cardList.clear();
-                }
-            }
-            // verbose mode true ise dosyayı yazdır.
-            if (verbose) {
-                for (String string : verboseList) {
-                    System.out.println(string);
-                }
-            }
-        } catch (NullPointerException nullPointerException) {
-            System.out.println("the system catch null parameter ");
-        } catch (Exception e) {
-            System.out.println("something went wrong with the game please start the game again");
+         for (int x = 0; x < _gamers.length - 1; x++) {
+             try {
+                 for (int j = 0; j < _gamers.length - x - 1; j++) {
+                     if (_gamers[j].getScore() < _gamers[j + 1].getScore()) {
+                         Player temp = _gamers[j];
+                         _gamers[j] = _gamers[j + 1];
+                         _gamers[j + 1] = (temp);
+                     }
+                 }
+             } catch (NullPointerException A) {
+                 break;
+
+             }
+         }
+         for (Player p : _gamers) {
+             try {
+                 System.out.println(p.getName() + "   " + p.getScore());
+             } catch (NullPointerException e) {
+                 break;
+             }
+         }
+
+         System.out.println("!!! congratulations  " + _gamers[0].getName() + " !!!");
+         System.out.println(_gamers[0].getName() + " is winner " + round + "th round");
+         setTopTen(_gamers[0]);
+         round ++;
         }
-
-        for (int x = 0; x < _gamers.length - 1; x++) {
-            try {
-                for (int j = 0; j < _gamers.length - x - 1; j++) {
-                    if (_gamers[j].getScore() < _gamers[j + 1].getScore()) {
-                        Player temp = _gamers[j];
-                        _gamers[j] = _gamers[j + 1];
-                        _gamers[j + 1] = (temp);
-                    }
-                }
-            } catch (NullPointerException A) {
-                break;
-
-            }
-        }
-        for (Player p : _gamers) {
-            try {
-                System.out.println(p.getName() + "   " + p.getScore());
-            } catch (NullPointerException e) {
-                break;
-            }
-        }
-
-        System.out.println("!!! congratulations  " + _gamers[0].getName() + " !!!");
-        setTopTen(_gamers[0]);
-
-
     }
     public static void showBoard (ArrayList < Card > board) {
         if (board.size() != 0) {
