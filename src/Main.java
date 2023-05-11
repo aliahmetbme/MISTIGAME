@@ -24,23 +24,7 @@ public class Main {
     static Player _fortGamer;
 
     public static void main(String[] args) {
-
-        System.out.println("-- Welcome to Mişti Game --");
-
-        while (true) {
-
-            getPlayerCount(args[0]); // how many player will play
-
-            if (playerCount == 4) {
-
-                break;
-            } else if (playerCount == 2) {
-
-                break;
-            } else {
-                System.out.println("\nPlease enter correct player number  2 or 4");
-            }
-        }
+        getPlayerCount(args[0]); // how many player will play
 
         checkFile(args[1]);
 
@@ -50,37 +34,51 @@ public class Main {
 
         getRoundCount(args[2]);
 
+        boolean verbose = takeVerboseValue(args[3]);
+        if (!verbose) {
+            System.out.println("Yanlış");
+        }
+
         int i = 0;
 
+        if ((args.length - 4) / 2 < playerCount || (args.length - 4) / 2 > playerCount){
+            System.err.println("Your players data were not given correctly \nThere are " + playerCount +" players but " +((args.length - 4) / 2 )+" players were provided");
+            try{
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                System.err.println(ex.getMessage());
+                System.exit(1);
+            }
+
+        }
         for (String g : gamersName) {
             try {
 
-                gamersName[i/2] = args[i+4]; // taking players name
+                gamersName[i / 2] = args[i + 4]; // taking players name
 
-                gamersCategories[i/2] = args[i+5]; // to choose players category, we need to take this information
+                gamersCategories[i / 2] = args[i + 5]; // to choose players category, we need to take this information
 
-                checkPlayerCategory(gamersCategories[i/2]);
+                checkPlayerCategory(gamersCategories[i / 2]);
 
-                if (gamersCategories[i/2].equals("HUMAN"))
+                if (gamersCategories[i / 2].equals("HUMAN"))
                     humanCounter++; // if HUMAN player are chosen, human counter are increase
-                switch (gamersCategories[i/2]) {
-                    case "HUMAN" -> _gamers[i/2] = new HumanPlayer(gamersName[i/2], card, 0, "HUMAN");
-                    case "EXPERT-BOTH" -> _gamers[i/2] = new ExpertPlayer(gamersName[i/2], card, 0, "EXPERT-BOTH");
-                    case "REGULAR-BOTH" -> _gamers[i/2] = new RegularPlayer(gamersName[i/2], card, 0, "REGULAR-BOTH");
-                    case "NOVICE-BOTH" -> _gamers[i/2] = new NovicePlayer(gamersName[i/2], card, 0, "NOVICE-BOTH");
+                switch (gamersCategories[i / 2]) {
+                    case "HUMAN" -> _gamers[i / 2] = new HumanPlayer(gamersName[i / 2], card, 0, "HUMAN");
+                    case "EXPERT-BOTH" -> _gamers[i / 2] = new ExpertPlayer(gamersName[i / 2], card, 0, "EXPERT-BOTH");
+                    case "REGULAR-BOTH" -> _gamers[i / 2] = new RegularPlayer(gamersName[i / 2], card, 0, "REGULAR-BOTH");
+                    case "NOVICE-BOTH" -> _gamers[i / 2] = new NovicePlayer(gamersName[i / 2], card, 0, "NOVICE-BOTH");
                 }
 
                 i += 2;
 
-                if ((i/2) == playerCount) break; // the program create gamers as player count which entered in game as
+                if ((i / 2) == playerCount) break; // the program create gamers as player count which entered in game as
 
-            } catch (GamerCategoryException e) {
-                System.out.println("Error :  " + e.getMessage());
             } catch (ArrayIndexOutOfBoundsException e) {
                 try {
                     throw new ParametersError();
                 } catch (ParametersError ex) {
-                    ex.getMessage();
+                    System.err.println(ex.getMessage());
+                    System.exit(1);
                 }
             }
         }
@@ -89,20 +87,17 @@ public class Main {
         int a = 1;
         for (Player p : _gamers) {
             try {
-                System.out.println(String.valueOf(a) + p.getName() + " " + p.getHand() + " " + p.getScore() + " " + p.getLevel());
-                a ++ ;
+                System.out.println(String.valueOf(a) + " " + p.getName() + " " + p.getLevel());
+                a++;
             } catch (NullPointerException e) {
                 break;
             }
         }
 
-        boolean verbose = takeVerboseValue(args[3]); /// kod testi için oluşturuldu.
-        if(!verbose){
-            System.out.println("Yanlış");
-        }
         //// oyun başlangıcı
 
         try {
+            System.out.println("-- Welcome to Mişti Game --");
             Deck deck = new Deck(pointFile); // burda kart ekleme dosyası eklenince dosyayı parametre olarak vericez !!
             deck.shuffle();
             deck.cut();
@@ -151,7 +146,7 @@ public class Main {
 
                         if (Player.topcard == null) {
 
-                            System.out.print(throwCard.toString() + " played  "+ gamer.getName() +"\n");
+                            System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n");
                             board.add(throwCard);
                             Player.topcard = throwCard;
                             ExpertPlayer.throwed.add(throwCard);
@@ -192,7 +187,7 @@ public class Main {
                                 gamer.getHand().remove(throwCard);
 
                             } else {
-                                System.out.print(throwCard.toString() + " played by "+gamer.getName()+"\n");
+                                System.out.print(throwCard.toString() + " played by " + gamer.getName() + "\n");
                                 board.add(throwCard);
                                 Player.topcard = throwCard;
                                 ExpertPlayer.throwed.add(throwCard);
@@ -211,10 +206,9 @@ public class Main {
                     System.out.println(string);
                 }
             }
-        } catch (NullPointerException nullPointerException){
+        } catch (NullPointerException nullPointerException) {
             System.out.println("the system catch null parameter ");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("something went wrong with the game please start the game again");
         }
 
@@ -243,6 +237,7 @@ public class Main {
         System.out.println("!!! congratulations  " + _gamers[0].getName() + " !!!");
         setTopTen(_gamers[0]);
 
+
     }
     public static void showBoard (ArrayList < Card > board) {
         if (board.size() != 0) {
@@ -264,25 +259,57 @@ public class Main {
     public static void getPlayerCount (String args){
         try {
             playerCount = Integer.parseInt(args.trim());
-        } catch (Exception e) {
+            if (playerCount > 4){
+                throw new Exception();
+            }
+        } catch (InputMismatchException e) {
             System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
             try {
                 throw new ParametersError();
             } catch (ParametersError ex) {
-                ex.getMessage();
+                System.err.println(ex.getMessage());
+                System.exit(1);
+            }
+        } catch (Exception e) {
+            System.out.println("\nError!!! : Player count cannot be more than 4 please provide player count less than 4");
+            try {
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                System.err.println(ex.getMessage());
                 System.exit(1);
             }
         }
     }
-    public static void checkPlayerCategory (String gamerCategory) throws GamerCategoryException {
+    public static void checkPlayerCategory (String gamerCategory)  {
 
             if (!gamerCategory.equals("HUMAN") && !gamerCategory.equals("EXPERT-BOTH") && !gamerCategory.equals("REGULAR-BOTH") && !gamerCategory.equals("NOVICE-BOTH")) {
-                throw new GamerCategoryException("Please enter category correctly");
+                try {
+                    throw new GamerCategoryException("Please enter category correctly");
+                } catch (GamerCategoryException e) {
+                    System.err.println(e.getMessage());
+                    try {
+                        throw new ParametersError();
+                    } catch (ParametersError ex) {
+                        System.err.println(ex.getMessage());
+                        System.exit(1);
+                    }
+                }
             }
 
             if (humanCounter > 1) {
                 humanCounter--;  // because program have already warned gamers, human count are decreased
-                throw new GamerCategoryException("You cannot choose HUMAN player more than one time");
+                try {
+                    throw new GamerCategoryException("You cannot choose HUMAN player more than one time");
+                } catch (GamerCategoryException e) {
+                    System.err.println(e.getMessage());
+                    try {
+                        throw new ParametersError();
+                    } catch (ParametersError ex) {
+                        System.err.println(ex.getMessage());
+                        System.exit(1);
+                    }
+
+                }
             }
     }
     public static void checkFile (String args) {
@@ -290,14 +317,18 @@ public class Main {
         pointFile = new File(pointFolderName + ".txt");
         try {
             if (pointFile.exists()) {
-                System.out.println("The file exists.");
+                System.out.println("The point file exists.");
             } else {
-                System.out.println("The file does not exist.");
                 throw new FileNotFoundException("The file you entered are not available please try again: ");
             }
         } catch (FileNotFoundException f){
-            f.getMessage();
-            System.exit(1);
+            System.err.println(f.getMessage());
+            try {
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                System.err.println(ex.getMessage());
+                System.exit(1);
+            }
         }
 
     }
@@ -370,12 +401,12 @@ public class Main {
     public static void getRoundCount (String args)   {
         try {
             roundCount = Integer.parseInt(args.trim());
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             System.err.println("Invalid parameter please provide Integer value for count number");
             try {
                 throw new ParametersError();
             } catch (ParametersError ex) {
-                ex.getMessage();
+                System.err.println(e.getMessage());
                 System.exit(1);
             }
         }
