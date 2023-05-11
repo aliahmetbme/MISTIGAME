@@ -1,4 +1,3 @@
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
