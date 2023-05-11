@@ -108,15 +108,21 @@ public class Main {
              Player.topcard = board.get(3);
              int hand_number = 0;
              ArrayList<String> verboseList = new ArrayList<>();
+             Player lastgamer ;
+             lastgamer=null;
 
              while (deck.getNumCards() != 0) {
 
-                 for (Player gamer : _gamers) {
-                     if (gamer == null) {
-                         break;
+                 for(int d=0;d<4;d++) {
+                     for (Player gamer : _gamers) {
+                         if (gamer == null) {
+                             break;
+                         }
+                         gamer.getHand().add(deck.dealcard());    // düzelt
                      }
-                     gamer.setHand(deck.deal(4));    // düzelt
                  }
+
+
                  hand_number += 1;
                  /// dosyaya handi ve ellerdeki kartları ve scoreları yazdır.
                  verboseList.add("HAND " + hand_number);
@@ -163,6 +169,7 @@ public class Main {
                                      Player.topcard = null;
                                      board.clear();
                                      gamer.getHand().remove(throwCard);
+                                     lastgamer=gamer;
                                  } else {
                                      System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
                                      System.out.println("you got all the cards at the board\n");
@@ -174,6 +181,7 @@ public class Main {
                                      ExpertPlayer.throwed.add(throwCard);
                                      board.clear();
                                      gamer.getHand().remove(throwCard);
+                                     lastgamer=gamer;
                                  }
 
                              } else if (throwCard.getCardFace().equals("J")) { // kartları dosyadan okumaya başlayınca burası değişecek
@@ -187,6 +195,7 @@ public class Main {
                                  ExpertPlayer.throwed.add(throwCard);
                                  board.clear();
                                  gamer.getHand().remove(throwCard);
+                                 lastgamer=gamer;
 
                              } else {
                                  System.out.print(throwCard.toString() + " played by " + gamer.getName() + "\n\n");
@@ -202,6 +211,12 @@ public class Main {
                      cardList.clear();
                  }
              }
+             if(board.size()!=0){
+                 for(Card card:board){
+                     lastgamer.setScore((lastgamer.getScore()+card.getPoints()));
+                 }
+             }
+
              // verbose mode true ise dosyayı yazdır.
              if (verbose) {
                  for (String string : verboseList) {
@@ -213,6 +228,7 @@ public class Main {
          } catch (Exception e) {
              System.out.println("something went wrong with the game please start the game again");
          }
+
 
          for (int x = 0; x < _gamers.length - 1; x++) {
              try {

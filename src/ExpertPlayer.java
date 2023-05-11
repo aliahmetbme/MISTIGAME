@@ -22,6 +22,7 @@ public class ExpertPlayer extends BothPlayer{
     public Card playCard() {
         Random r=new Random();
         int cardindex=-1;
+        Card throw_card = null;
         try {
             //if there is one card in the hand
             if (this.getHand().size()==1){
@@ -33,6 +34,7 @@ public class ExpertPlayer extends BothPlayer{
                         return card;
                     }
                 }
+                /// throwed ve puana göre kısmı ekle
             }//to check the repeated cards in the hand to throw
             else if (throwed.size()!=0){
                 ArrayList<Integer> repeat = new ArrayList<Integer>(Collections.nCopies(this.getHand().size(), 0));
@@ -45,10 +47,31 @@ public class ExpertPlayer extends BothPlayer{
                     }
                     index+=1;
                 }
-                cardindex= repeat.indexOf(Collections.max(repeat));
-            }/*else if (this.getHand().size()!=0){
-                cardindex = r.nextInt(this.getHand().size());
-            }*/
+                int cardrepeat= Collections.max(repeat);
+                ArrayList<Card> scorecard=new ArrayList<>();
+                for(Integer i:repeat){
+                    if(i==cardrepeat){
+                        scorecard.add(this.getHand().get(repeat.indexOf(i)));
+                    }
+                }
+                int min = scorecard.get(0).getPoints();
+                for (Card card : scorecard){
+                    if (card.getPoints()<min){
+                        min=card.getPoints();
+                        throw_card=card;
+                    }
+                }
+                return throw_card;
+
+            }
+            else{
+                ArrayList<Integer> handpoints= new ArrayList<>();
+                for( Card card: this.getHand()){
+                    handpoints.add(card.getPoints());
+                }
+                return this.getHand().get(handpoints.indexOf(Collections.min(handpoints)));
+            }
+
             return this.getHand().get(cardindex);
         }catch(Exception e){
             return this.getHand().get(0);

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 public class RegularPlayer extends BothPlayer{
     Random r = new Random();
@@ -19,10 +20,11 @@ public class RegularPlayer extends BothPlayer{
                 }
             }
             int index = 0;
-            if (this.getHand().size() != 1) {
-                index = r.nextInt(this.getHand().size()) ;
+            ArrayList<Integer> handpoints= new ArrayList<>();
+            for( Card card: this.getHand()){
+                handpoints.add(card.getPoints());
             }
-            return this.getHand().get(index);
+            return this.getHand().get(handpoints.indexOf(Collections.min(handpoints)));
         }catch(Exception e){
             return this.getHand().get(0);
         }
