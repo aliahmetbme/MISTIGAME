@@ -75,7 +75,11 @@ public class Deck {
     public File getPointFile() {
         return pointFile;
     }
-
+    public Card  dealcard() {
+        Card deal= this.cards.get(0);
+        this.cards.remove(0);
+        return deal;
+    }
 
 
 
