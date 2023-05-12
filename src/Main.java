@@ -37,6 +37,7 @@ public class Main {
         String[] gamersName = {firstGamerName, secondGamerName, thirdGamerName, forthGamerName};
         String[] gamersCategories = {firstGamerCategory, secondGamerCategory, thirdGamerCategory, forthGamerCategory};
         _gamers = new Player[]{_firstGamer, _secondGamer, _thirdGamer, _fortGamer};
+
         ArrayList<ArrayList<Card>> hands  = new ArrayList<ArrayList<Card>>(4);
 
         hands.add(hand1);
@@ -104,8 +105,8 @@ public class Main {
         }
         int round = 1;
         //// oyun başlangıcı
-     while (roundCount >= round) {
-         try {
+         while (roundCount >= round) {
+             try {
              System.out.println("-- Welcome to Mişti Game "+round+"th round --");
              Deck deck = new Deck(pointFile); // burda kart ekleme dosyası eklenince dosyayı parametre olarak vericez !!
              deck.shuffle();
@@ -122,19 +123,6 @@ public class Main {
 
              while (deck.getNumCards() != 0) {
 
-//                 for(int d=0;d<4;d++) {
-//                     for (Player gamer : _gamers) {
-//                         if (gamer == null) {
-//                             break;                       OYUNU PATLATIYOR
-//                         }
-//                         System.out.println(gamer.getHand().add(deck.dealcard()));    // düzelt
-//                     }
-//                 }
-                /* for (Player gamer :_gamers){
-                     if (gamer == null) break;
-                     gamer.setHand(deck.deal(4));
-                 }
-*/
                  deck.dealcard(_gamers);
 
                  hand_number += 1;
@@ -229,6 +217,7 @@ public class Main {
                      lastgamer.setScore((lastgamer.getScore()+card.getPoints()));
                  }
              }
+             showBoard(board);
 
              // verbose mode true ise dosyayı yazdır.
              if (verbose) {
@@ -236,8 +225,6 @@ public class Main {
                      System.out.println(string);
                  }
              }
-
-             showBoard(board);
 
          } catch (NullPointerException nullPointerException) {
              System.out.println("the system catch null parameter ");
