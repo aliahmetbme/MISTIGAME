@@ -51,18 +51,17 @@ public class Main {
             }
 
         }
-        for (String g : gamersName) {
+         while (true) {
             try {
 
                 gamersName[i / 2] = args[i + 4]; // taking players name
 
                 gamersCategories[i / 2] = args[i + 5]; // to choose players category, we need to take this information
 
-                checkPlayerCategory(gamersCategories[i / 2]);
-
                 if (gamersCategories[i / 2].equals("HUMAN")) {
                     humanCounter++;
                 }// if HUMAN player are chosen, human counter are increase
+                checkPlayerCategory(gamersCategories[i / 2]);
                 switch (gamersCategories[i / 2]) {
                     case "HUMAN" -> _gamers[i / 2] = new HumanPlayer(gamersName[i / 2], card, 0, "HUMAN");
                     case "EXPERT-BOTH" -> _gamers[i / 2] = new ExpertPlayer(gamersName[i / 2], card, 0, "EXPERT-BOTH");
@@ -114,13 +113,17 @@ public class Main {
 
              while (deck.getNumCards() != 0) {
 
-                 for(int d=0;d<4;d++) {
-                     for (Player gamer : _gamers) {
-                         if (gamer == null) {
-                             break;
-                         }
-                         gamer.getHand().add(deck.dealcard());    // düzelt
-                     }
+//                 for(int d=0;d<4;d++) {
+//                     for (Player gamer : _gamers) {
+//                         if (gamer == null) {
+//                             break;                       OYUNU PATLATIYOR
+//                         }
+//                         System.out.println(gamer.getHand().add(deck.dealcard()));    // düzelt
+//                     }
+//                 }
+                 for (Player gamer :_gamers){
+                     if (gamer == null) break;
+                     gamer.setHand(deck.deal(4));
                  }
 
 
@@ -141,7 +144,6 @@ public class Main {
 
                      ArrayList<Card> cardList = new ArrayList<>();
                      for (Player gamer : _gamers) {
-
                          if (gamer == null) {
                              break;
                          }
@@ -338,7 +340,7 @@ public class Main {
         pointFile = new File(pointFolderName + ".txt");
         try {
             if (pointFile.exists()) {
-                System.out.println("The point file exists.");
+                return;
             } else {
                 throw new FileNotFoundException("The file you entered are not available please try again: ");
             }

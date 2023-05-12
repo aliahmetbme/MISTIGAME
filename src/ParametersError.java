@@ -2,7 +2,7 @@ import java.io.PrintWriter;
 
 public class ParametersError extends Exception{
     public ParametersError(){
-        super("\n\nPlease provide parameters correctly \n " +
+        super("\nPlease provide parameters correctly \n" +
                 "1 - Player Count \n" +
                 "2 - Point file name \n" +
                 "3 - Round Count \n" +
@@ -18,9 +18,5 @@ public class ParametersError extends Exception{
                 "10 - Third player level  \n" +
                 "11 - Forth player name  \n" +
                 "12 - Forth player level  \n");
-    }
-    @Override
-    public void printStackTrace(PrintWriter s) {
-        super.printStackTrace(s);
     }
 }
