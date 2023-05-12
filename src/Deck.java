@@ -73,13 +73,19 @@ public class Deck {
     public File getPointFile() {
         return pointFile;
     }
-    public Card  dealcard() {
-        Card deal= this.cards.get(0);
-        this.cards.remove(0);
-        return deal;
+    public void dealcard(Player[] gamers) {
+        int i=0;
+        while(i<4) {
+            for (Player gamer : gamers) {
+                if (gamer == null) break;
+                Card card = cards.remove(0);
+                gamer.getHand().add(card);
+            }
+            i+=1;
+        }
+
+
     }
-
-
 
 }
 

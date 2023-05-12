@@ -121,11 +121,12 @@ public class Main {
 //                         System.out.println(gamer.getHand().add(deck.dealcard()));    // düzelt
 //                     }
 //                 }
-                 for (Player gamer :_gamers){
+                /* for (Player gamer :_gamers){
                      if (gamer == null) break;
                      gamer.setHand(deck.deal(4));
                  }
-
+*/
+                 deck.dealcard(_gamers);
 
                  hand_number += 1;
                  /// dosyaya handi ve ellerdeki kartları ve scoreları yazdır.
