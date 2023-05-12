@@ -4,8 +4,8 @@ import java.util.Random;
 public class RegularPlayer extends BothPlayer{
     Random r = new Random();
   /*  private Card topcard= null;*/
-    public RegularPlayer(String name, ArrayList<Card> hand, int score, String level) {
-        super(name, hand, score, level);
+    public RegularPlayer(String name, ArrayList<Card> hand, int score, String level, ArrayList<Card> storedCards) {
+        super(name, hand, score, level,storedCards);
     }
 
 

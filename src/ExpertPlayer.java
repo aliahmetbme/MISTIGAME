@@ -5,8 +5,8 @@ import java.util.Random;
 public class ExpertPlayer extends BothPlayer{
     static ArrayList<Card> throwed;
     /*private Card topcard= null;*/
-    public ExpertPlayer(String name, ArrayList<Card> hand, int score, String level) {
-        super(name, hand, score, level);
+    public ExpertPlayer(String name, ArrayList<Card> hand, int score, String level, ArrayList<Card> storedCards) {
+        super(name, hand, score, level,storedCards);
     }
 
  /*   public void addThrowed(Card card){

@@ -5,8 +5,8 @@ public class NovicePlayer extends BothPlayer{
 
     Random r = new Random();
 
-    public NovicePlayer(String name, ArrayList<Card> hand, int score,String level) {
-        super(name, hand, score, level);
+    public NovicePlayer(String name, ArrayList<Card> hand, int score,String level,ArrayList<Card> storedCards) {
+        super(name, hand, score, level,storedCards);
     }
     @Override
     public Card playCard() {

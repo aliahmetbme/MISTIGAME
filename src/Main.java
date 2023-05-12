@@ -14,6 +14,11 @@ public class Main {
     static ArrayList<Card> hand3 = new ArrayList<Card>(4);
     static ArrayList<Card> hand4 = new ArrayList<Card>(4);
 
+    static ArrayList<Card> storeCards1 = new ArrayList<Card>(4);
+    static ArrayList<Card> storeCards2 = new ArrayList<Card>(4);
+    static ArrayList<Card> storeCards3 = new ArrayList<Card>(4);
+    static ArrayList<Card> storeCards4 = new ArrayList<Card>(4);
+
     static int playerCount = 0;
     static int humanCounter = 0;
     static String firstGamerName;
@@ -45,6 +50,13 @@ public class Main {
         hands.add(hand3);
         hands.add(hand4);
 
+        ArrayList<ArrayList<Card>> storeCards  = new ArrayList<ArrayList<Card>>(4);
+
+        storeCards.add(storeCards1);
+        storeCards.add(storeCards2);
+        storeCards.add(storeCards3);
+        storeCards.add(storeCards4);
+
         getRoundCount(args[2]);
 
         boolean verbose = takeVerboseValue(args[3]);
@@ -73,10 +85,10 @@ public class Main {
                 }// if HUMAN player are chosen, human counter are increase
                 checkPlayerCategory(gamersCategories[i / 2]);
                 switch (gamersCategories[i / 2]) {
-                    case "HUMAN" -> _gamers[i / 2] = new HumanPlayer(gamersName[i / 2], hands.get(i/2), 0, "HUMAN");
-                    case "EXPERT-BOTH" -> _gamers[i / 2] = new ExpertPlayer(gamersName[i / 2], hands.get(i/2), 0, "EXPERT-BOTH");
-                    case "REGULAR-BOTH" -> _gamers[i / 2] = new RegularPlayer(gamersName[i / 2], hands.get(i/2), 0, "REGULAR-BOTH");
-                    case "NOVICE-BOTH" -> _gamers[i / 2] = new NovicePlayer(gamersName[i / 2], hands.get(i/2), 0, "NOVICE-BOTH");
+                    case "HUMAN" -> _gamers[i / 2] = new HumanPlayer(gamersName[i / 2], hands.get(i/2), 0, "HUMAN",storeCards.get(i/2));
+                    case "EXPERT-BOTH" -> _gamers[i / 2] = new ExpertPlayer(gamersName[i / 2], hands.get(i/2), 0, "EXPERT-BOTH",storeCards.get(i/2));
+                    case "REGULAR-BOTH" -> _gamers[i / 2] = new RegularPlayer(gamersName[i / 2], hands.get(i/2), 0, "REGULAR-BOTH",storeCards.get(i/2));
+                    case "NOVICE-BOTH" -> _gamers[i / 2] = new NovicePlayer(gamersName[i / 2], hands.get(i/2), 0, "NOVICE-BOTH",storeCards.get(i/2));
                 }
 
                 i += 2;
@@ -168,6 +180,8 @@ public class Main {
                                      gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
                                      ExpertPlayer.throwed.add(throwCard);
                                      Player.topcard = null;
+                                     board.add(throwCard);
+                                     gamer.getStoredCard().addAll(board);
                                      board.clear();
                                      gamer.getHand().remove(throwCard);
                                      lastgamer=gamer;
@@ -179,7 +193,9 @@ public class Main {
                                      }
                                      gamer.setScore(gamer.getScore() + throwCard.getPoints());
                                      Player.topcard = null;
+                                     board.add(throwCard);
                                      ExpertPlayer.throwed.add(throwCard);
+                                     gamer.getStoredCard().addAll(board);
                                      board.clear();
                                      gamer.getHand().remove(throwCard);
                                      lastgamer=gamer;
@@ -193,7 +209,9 @@ public class Main {
                                  }
                                  gamer.setScore(gamer.getScore() + throwCard.getPoints());
                                  Player.topcard = null;
+                                 board.add(throwCard);
                                  ExpertPlayer.throwed.add(throwCard);
+                                 gamer.getStoredCard().addAll(board);
                                  board.clear();
                                  gamer.getHand().remove(throwCard);
                                  lastgamer=gamer;
@@ -216,6 +234,7 @@ public class Main {
                  for(Card card:board){
                      lastgamer.setScore((lastgamer.getScore()+card.getPoints()));
                  }
+                 lastgamer.getStoredCard().addAll(board);
              }
              showBoard(board);
 
@@ -231,6 +250,13 @@ public class Main {
          } catch (Exception e) {
              System.out.println("something went wrong with the game please start the game again");
          }
+             System.out.println("In " + round +"th ");
+
+             int index = 0;
+             for (ArrayList<Card> cardx : storeCards){
+                 System.out.println(_gamers[index].getName() + " " + cardx.toString() + " " );
+                 index++;
+             }
 
          for (int x = 0; x < _gamers.length - 1; x++) {
              try {
@@ -258,7 +284,10 @@ public class Main {
          System.out.println("!!! congratulations  " + _gamers[0].getName() + " !!!");
          System.out.println(_gamers[0].getName() + " is winner " + round + "th round");
          setTopTen(_gamers[0]);
-         round ++;
+
+
+
+             round ++;
         }
     }
     public static void showBoard (ArrayList < Card > board) {
@@ -368,7 +397,7 @@ public class Main {
 
             while (scanner.hasNextLine()) {
                 String[] information = scanner.nextLine().trim().split(",");
-                Player winwin = new Winners(information[0], card, Integer.parseInt(information[2].trim()), information[1]);
+                Player winwin = new Winners(information[0], card, Integer.parseInt(information[2].trim()), information[1],card);
                 winners[i] = winwin;
                 i++;
             }
