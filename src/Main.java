@@ -8,6 +8,12 @@ public class Main {
     static Player[] _gamers ;
     static int roundCount;
     static ArrayList<Card> card = new ArrayList<Card>(4);
+
+    static ArrayList<Card> hand1 = new ArrayList<Card>(4);
+    static ArrayList<Card> hand2 = new ArrayList<Card>(4);
+    static ArrayList<Card> hand3 = new ArrayList<Card>(4);
+    static ArrayList<Card> hand4 = new ArrayList<Card>(4);
+
     static int playerCount = 0;
     static int humanCounter = 0;
     static String firstGamerName;
@@ -31,13 +37,16 @@ public class Main {
         String[] gamersName = {firstGamerName, secondGamerName, thirdGamerName, forthGamerName};
         String[] gamersCategories = {firstGamerCategory, secondGamerCategory, thirdGamerCategory, forthGamerCategory};
         _gamers = new Player[]{_firstGamer, _secondGamer, _thirdGamer, _fortGamer};
+        ArrayList<ArrayList<Card>> hands  = new ArrayList<ArrayList<Card>>(4);
+
+        hands.add(hand1);
+        hands.add(hand2);
+        hands.add(hand3);
+        hands.add(hand4);
 
         getRoundCount(args[2]);
 
         boolean verbose = takeVerboseValue(args[3]);
-        if (!verbose) {
-            System.out.println("Yanlış");
-        }
 
         int i = 0;
 
@@ -63,10 +72,10 @@ public class Main {
                 }// if HUMAN player are chosen, human counter are increase
                 checkPlayerCategory(gamersCategories[i / 2]);
                 switch (gamersCategories[i / 2]) {
-                    case "HUMAN" -> _gamers[i / 2] = new HumanPlayer(gamersName[i / 2], card, 0, "HUMAN");
-                    case "EXPERT-BOTH" -> _gamers[i / 2] = new ExpertPlayer(gamersName[i / 2], card, 0, "EXPERT-BOTH");
-                    case "REGULAR-BOTH" -> _gamers[i / 2] = new RegularPlayer(gamersName[i / 2], card, 0, "REGULAR-BOTH");
-                    case "NOVICE-BOTH" -> _gamers[i / 2] = new NovicePlayer(gamersName[i / 2], card, 0, "NOVICE-BOTH");
+                    case "HUMAN" -> _gamers[i / 2] = new HumanPlayer(gamersName[i / 2], hands.get(i/2), 0, "HUMAN");
+                    case "EXPERT-BOTH" -> _gamers[i / 2] = new ExpertPlayer(gamersName[i / 2], hands.get(i/2), 0, "EXPERT-BOTH");
+                    case "REGULAR-BOTH" -> _gamers[i / 2] = new RegularPlayer(gamersName[i / 2], hands.get(i/2), 0, "REGULAR-BOTH");
+                    case "NOVICE-BOTH" -> _gamers[i / 2] = new NovicePlayer(gamersName[i / 2], hands.get(i/2), 0, "NOVICE-BOTH");
                 }
 
                 i += 2;
