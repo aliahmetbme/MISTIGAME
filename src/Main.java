@@ -259,13 +259,23 @@ public class Main {
                  index++;
              }
 
-         for (int x = 0; x < _gamers.length - 1; x++) {
+         Player[] array = new Player[4];
+             for (int w = 0 ; w < array.length ; w ++) {
+                 try {
+                     array[w] = _gamers[w];
+                 } catch (NullPointerException nullPointerException) {
+                     break;
+                 }
+             }
+
+
+         for (int x = 0; x < array.length - 1; x++) {
              try {
-                 for (int j = 0; j < _gamers.length - x - 1; j++) {
-                     if (_gamers[j].getScore() < _gamers[j + 1].getScore()) {
-                         Player temp = _gamers[j];
-                         _gamers[j] = _gamers[j + 1];
-                         _gamers[j + 1] = (temp);
+                 for (int j = 0; j < array.length - x - 1; j++) {
+                     if (array[j].getScore() < array[j + 1].getScore()) {
+                         Player temp = array[j];
+                         array[j] = array[j + 1];
+                         array[j + 1] = (temp);
                      }
                  }
              } catch (NullPointerException A) {
@@ -274,7 +284,7 @@ public class Main {
              }
          }
 
-         for (Player p : _gamers) {
+         for (Player p : array) {
              try {
                  System.out.println(p.getName() + "   " + p.getScore());
              } catch (NullPointerException e) {
@@ -282,9 +292,9 @@ public class Main {
              }
          }
 
-         System.out.println("!!! congratulations  " + _gamers[0].getName() + " !!!");
-         System.out.println(_gamers[0].getName() + " is winner " + round + "th round");
-         setTopTen(_gamers[0]);
+         System.out.println("!!! congratulations  " + array[0].getName() + " !!!");
+         System.out.println(array[0].getName() + " is winner " + round + "th round");
+         setTopTen(array[0]);
 
          for(Player p : _gamers){
              try {
@@ -394,24 +404,26 @@ public class Main {
         FileWriter writer = null;
         try {
             File file = new File("Score.txt");
+
             if (!file.exists()){
                 writer = new FileWriter(file);
-                for (int p = 0 ; p <= 10 ; p++)  {
+                for (int p = 0 ; p < 10 ; p++)  {
                     writer.write("_" + "," + "_" + "," + "0"+ "\n");
                 }
             }
+
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("Score.txt")));
             Player[] winners = new Player[10]; // to store winners information easier, a player array are created
             int i = 0;
 
             while (scanner.hasNextLine()) {
-                System.out.println(i);
                 String[] information = scanner.nextLine().trim().split(",");
                 if (information.length == 1 ) break;
                 Player winwin = new Winners(information[0], card, Integer.parseInt(information[2].trim()), information[1],card);
                 winners[i] = winwin;
                 i++;
             }
+
             try {
                 if (winners[i] == null) {
                     winners[i] = winner;
@@ -443,8 +455,11 @@ public class Main {
             try {
                 writer = new FileWriter("Score.txt");
                 for (Player p : winners) {
-                    if (p == null) break;
-                    writer.write(p.getName() + "," + p.getLevel() + "," + String.valueOf(p.getScore() + "\n"));
+                    if (p == null) {
+                        writer.write("_,_,0\n");
+                    } else {
+                        writer.write(p.getName() + "," + p.getLevel() + "," + String.valueOf(p.getScore() + "\n"));
+                    }
                 }
             } catch (IOException E) {
                 System.out.println("Error : the file cannot be opened");
