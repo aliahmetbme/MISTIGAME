@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player{
 
-    public HumanPlayer(String name, ArrayList<Card> hand, int score, String level) {
-        super(name, hand, score,level);
+    public HumanPlayer(String name, ArrayList<Card> hand, int score, String level, ArrayList<Card> storedCards) {
+        super(name, hand, score, level,storedCards);
     }
 
     public void showHand(){

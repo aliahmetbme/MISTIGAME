@@ -6,12 +6,14 @@ public abstract class Player {
     private ArrayList<Card> hand;
     private int score;
     private String level;
+    private ArrayList<Card> storedCard;
 
-    public Player(String name, ArrayList<Card> hand, int score, String level) {
+    public Player(String name, ArrayList<Card> hand, int score, String level, ArrayList<Card> storedCard) {
         this.name = name;
         this.hand = hand;
         this.score = score;
         this.level = level;
+        this.storedCard = storedCard;
     }
 
     public String getName() {
@@ -41,11 +43,18 @@ public abstract class Player {
     public String getLevel() {
         return level;
     }
-
-
     public Card playCard(){return null;};
 
     public void setLevel(String level) {
         this.level = level;
     }
+
+    public ArrayList<Card> getStoredCard() {
+        return storedCard;
+    }
+
+    public void setStoredCard(ArrayList<Card> cards){
+        this.storedCard = cards;
+    }
+
 }
