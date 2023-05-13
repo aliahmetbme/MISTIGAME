@@ -178,6 +178,7 @@ public class Main {
                                      System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
                                      System.out.print("MİŞTİ\n");
                                      gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
+                                     // tanımda kartların puanları 5 le çarpılır diyor
                                      ExpertPlayer.throwed.add(throwCard);
                                      Player.topcard = null;
                                      board.add(throwCard);
@@ -285,7 +286,15 @@ public class Main {
          System.out.println(_gamers[0].getName() + " is winner " + round + "th round");
          setTopTen(_gamers[0]);
 
-
+         for(Player p : _gamers){
+             try {
+                  p.setScore(0);
+                  p.getHand().clear();
+                  p.getStoredCard().clear();
+             } catch (NullPointerException e) {
+                 break;
+             }
+         }
 
              round ++;
         }
@@ -396,13 +405,15 @@ public class Main {
             int i = 0;
 
             while (scanner.hasNextLine()) {
+                System.out.println(i);
                 String[] information = scanner.nextLine().trim().split(",");
+                if (information.length == 1 ) break;
                 Player winwin = new Winners(information[0], card, Integer.parseInt(information[2].trim()), information[1],card);
                 winners[i] = winwin;
                 i++;
             }
             try {
-                if (winners[i] == null && i != 8) {
+                if (winners[i] == null) {
                     winners[i] = winner;
                 } else {
                     if (winner.getScore() > winners[i].getScore()) {
@@ -413,6 +424,8 @@ public class Main {
                 if (winner.getScore() > winners[9].getScore()) {
                     winners[9] = winner;
                 }
+            }catch (NullPointerException e){
+                System.out.println("null ki ne null");
             }
             for (int x = 0; x < winners.length - 1; x++) {
                 try {
