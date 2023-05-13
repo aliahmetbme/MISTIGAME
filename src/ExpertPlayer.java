@@ -8,16 +8,6 @@ public class ExpertPlayer extends BothPlayer{
     public ExpertPlayer(String name, ArrayList<Card> hand, int score, String level, ArrayList<Card> storedCards) {
         super(name, hand, score, level,storedCards);
     }
-
- /*   public void addThrowed(Card card){
-        throwed.add(card);
-    }
-    public void SetTopCard(Card card){
-        this.topcard = card;
-    }
-    public void SetTopCard(){
-        this.topcard = null;
-    }*/
     @Override
     public Card playCard() {
         int cardindex=-1;
