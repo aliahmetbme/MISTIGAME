@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.Random;
 
 public class ExpertPlayer extends BothPlayer{
-    static ArrayList<Card> throwed;
+    public static ArrayList<Card> throwed;
     /*private Card topcard= null;*/
     public ExpertPlayer(String name, ArrayList<Card> hand, int score, String level, ArrayList<Card> storedCards) {
         super(name, hand, score, level,storedCards);

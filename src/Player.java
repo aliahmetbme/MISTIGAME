@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public abstract class Player {
-    static Card topcard;
+
     private String name;
     private ArrayList<Card> hand;
     private int score;

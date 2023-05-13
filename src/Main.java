@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
 public class Main {
     static File pointFile;
     static Player[] _gamers ;
@@ -143,7 +142,7 @@ public class Main {
                     board = deck.deal(4);
                     ExpertPlayer.throwed = new ArrayList<>();
                     ExpertPlayer.throwed.addAll(board);
-                    Player.topcard = board.get(3);
+                    BothPlayer.topcard = board.get(3);
                     int hand_number = 0;
                     ArrayList<String> verboseList = new ArrayList<>();
                     Player lastgamer;
@@ -179,23 +178,23 @@ public class Main {
                                 Card throwCard = gamer.playCard();
                                 cardList.add(throwCard);
 
-                                if (Player.topcard == null) {
+                                if (BothPlayer.topcard == null) {
 
                                     System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
                                     board.add(throwCard);
-                                    Player.topcard = throwCard;
+                                    BothPlayer.topcard = throwCard;
                                     ExpertPlayer.throwed.add(throwCard);
                                     gamer.getHand().remove(throwCard);
 
                                 } else {
 
-                                    if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
+                                    if (throwCard.getCardFace().equals(BothPlayer.topcard.getCardFace())) {
                                         if (board.size() == 1) {
                                             System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
                                             System.out.print("!!! MİŞTİ !!!\n");
-                                            gamer.setScore(gamer.getScore() + (throwCard.getPoints() + Player.topcard.getPoints()) * 5);
+                                            gamer.setScore(gamer.getScore() + (throwCard.getPoints() + BothPlayer.topcard.getPoints()) * 5);
                                             ExpertPlayer.throwed.add(throwCard);
-                                            Player.topcard = null;
+                                            BothPlayer.topcard = null;
                                             board.add(throwCard);
                                             gamer.getStoredCard().addAll(board);
                                             board.clear();
@@ -208,7 +207,7 @@ public class Main {
                                                 gamer.setScore(gamer.getScore() + card.getPoints());
                                             }
                                             gamer.setScore(gamer.getScore() + throwCard.getPoints());
-                                            Player.topcard = null;
+                                            BothPlayer.topcard = null;
                                             board.add(throwCard);
                                             ExpertPlayer.throwed.add(throwCard);
                                             gamer.getStoredCard().addAll(board);
@@ -224,7 +223,7 @@ public class Main {
                                             gamer.setScore(gamer.getScore() + card.getPoints());
                                         }
                                         gamer.setScore(gamer.getScore() + throwCard.getPoints());
-                                        Player.topcard = null;
+                                        BothPlayer.topcard = null;
                                         board.add(throwCard);
                                         ExpertPlayer.throwed.add(throwCard);
                                         gamer.getStoredCard().addAll(board);
@@ -235,7 +234,7 @@ public class Main {
                                     } else {
                                         System.out.print(throwCard.toString() + " played by " + gamer.getName() + "\n\n");
                                         board.add(throwCard);
-                                        Player.topcard = throwCard;
+                                        BothPlayer.topcard = throwCard;
                                         ExpertPlayer.throwed.add(throwCard);
                                         gamer.getHand().remove(throwCard);
                                     }
