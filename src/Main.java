@@ -35,7 +35,7 @@ public class Main {
     static Player _fortGamer;
 
     public static void main(String[] args) {
-        try {
+
             boolean verbose = true;
             try {
                 getPlayerCount(args[0]); // how many player will play
@@ -44,7 +44,7 @@ public class Main {
                 verbose = takeVerboseValue(args[3]);
 
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("You provided incomplete information");
+                System.out.println("\nYou provided incomplete information");
                 try {
                     throw new ParametersError();
                 } catch (ParametersError ex) {
@@ -75,7 +75,7 @@ public class Main {
             int i = 0;
 
             if ((args.length - 4) / 2 < playerCount || (args.length - 4) / 2 > playerCount) {
-                System.err.println("Your players data were not given correctly \nThere are " + playerCount + " players but " + ((args.length - 4) / 2) + " players were provided");
+                System.err.println("\nYour players data were not given correctly \nThere are " + playerCount + " players but " + ((args.length - 4) / 2) + " players were provided");
                 try {
                     throw new ParametersError();
                 } catch (ParametersError ex) {
@@ -271,6 +271,7 @@ public class Main {
 
                 int index = 0;
                 for (ArrayList<Card> cardx : storeCards) {
+                    if (_gamers[index] == null) break;
                     System.out.println(_gamers[index].getName() + " " + cardx.toString() + " ");
                     index++;
                 }
@@ -317,6 +318,7 @@ public class Main {
                         p.setScore(0);
                         p.getHand().clear();
                         p.getStoredCard().clear();
+                        ExpertPlayer.throwed.clear();
                     } catch (NullPointerException e) {
                         break;
                     }
@@ -324,10 +326,7 @@ public class Main {
 
                 round++;
             }
-        } catch (Exception e){
-            System.out.println(" En error occurred please try again ");
-            System.exit(1);
-        }
+
     }
     public static void showBoard (ArrayList < Card > board) {
         if (board.size() != 0) {
@@ -352,7 +351,16 @@ public class Main {
                 if (playerCount > 4 || playerCount < 2) {
                     throw new Exception();
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException numberFormatException){
+                System.out.println("\nError!!! : The value is too high");
+                try {
+                    throw new ParametersError();
+                } catch (ParametersError ex) {
+                    System.err.println(ex.getMessage());
+                    System.exit(1);
+                }
+            }
+            catch (InputMismatchException e) {
                 System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
                 try {
                     throw new ParametersError();
@@ -372,7 +380,8 @@ public class Main {
     }
     public static void checkPlayerCategory (String gamerCategory)  {
 
-            if (!gamerCategory.equals("HUMAN") && !gamerCategory.equals("EXPERT-BOTH") && !gamerCategory.equals("REGULAR-BOTH") && !gamerCategory.equals("NOVICE-BOTH")) {
+            if (!gamerCategory.equals("HUMAN") && !gamerCategory.equals("EXPERT-BOTH") && !gamerCategory.equals("REGULAR-BOTH")
+                    && !gamerCategory.equals("NOVICE-BOTH")) {
                 try {
                     throw new GamerCategoryException("Please enter category correctly");
                 } catch (GamerCategoryException e) {
@@ -498,16 +507,24 @@ public class Main {
     public static void getRoundCount (String args)   {
         try {
             roundCount = Integer.parseInt(args.trim());
-        } catch (NumberFormatException numberFormatException){
-            System.err.println("Error: please provide Integer value ");
+        }  catch (NumberFormatException numberFormatException){
+            System.out.println("\nError!!! : The value is too high");
             try {
                 throw new ParametersError();
             } catch (ParametersError ex) {
                 System.err.println(ex.getMessage());
                 System.exit(1);
             }
-
-        } catch (Exception e) {
+        }
+        catch (InputMismatchException e) {
+            System.out.println("\nError!!! : Please type your count as number (Input is not an Integer)");
+            try {
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                System.err.println(ex.getMessage());
+                System.exit(1);
+            }
+        }catch (Exception e) {
             System.err.println("Invalid parameter please provide Integer value for count number");
             try {
                 throw new ParametersError();
