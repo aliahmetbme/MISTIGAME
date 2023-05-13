@@ -176,9 +176,8 @@ public class Main {
                              if (throwCard.getCardFace().equals(Player.topcard.getCardFace())) {
                                  if (board.size() == 1) {
                                      System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
-                                     System.out.print("MİŞTİ\n");
-                                     gamer.setScore(gamer.getScore() + 10 + throwCard.getPoints() + Player.topcard.getPoints());
-                                     // tanımda kartların puanları 5 le çarpılır diyor
+                                     System.out.print("!!! MİŞTİ !!!\n");
+                                     gamer.setScore(gamer.getScore() + (throwCard.getPoints() + Player.topcard.getPoints())*5);
                                      ExpertPlayer.throwed.add(throwCard);
                                      Player.topcard = null;
                                      board.add(throwCard);
@@ -188,7 +187,7 @@ public class Main {
                                      lastgamer=gamer;
                                  } else {
                                      System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
-                                     System.out.println("you got all the cards at the board\n");
+                                     System.out.println("!!!" +gamer.getName() + " got all the cards at the board !!!\n");
                                      for (Card card : board) {
                                          gamer.setScore(gamer.getScore() + card.getPoints());
                                      }
@@ -202,9 +201,9 @@ public class Main {
                                      lastgamer=gamer;
                                  }
 
-                             } else if (throwCard.getCardFace().equals("J")) { // kartları dosyadan okumaya başlayınca burası değişecek
+                             } else if (throwCard.getCardFace().equals("J")) {
                                  System.out.print(throwCard.toString() + " played  " + gamer.getName() + "\n\n");
-                                 System.out.println("you got all the cards at the board\n");
+                                 System.out.println("!!!" +gamer.getName() + " got all the cards at the board !!!\n");
                                  for (Card card : board) {
                                      gamer.setScore(gamer.getScore() + card.getPoints());
                                  }
@@ -251,13 +250,14 @@ public class Main {
          } catch (Exception e) {
              System.out.println("something went wrong with the game please start the game again");
          }
-             System.out.println("In " + round +"th ");
 
-             int index = 0;
-             for (ArrayList<Card> cardx : storeCards){
-                 System.out.println(_gamers[index].getName() + " " + cardx.toString() + " " );
-                 index++;
-             }
+         System.out.println("In " + round +"th ");
+
+         int index = 0;
+         for (ArrayList<Card> cardx : storeCards){
+             System.out.println(_gamers[index].getName() + " " + cardx.toString() + " " );
+             index++;
+         }
 
          Player[] array = new Player[4];
              for (int w = 0 ; w < array.length ; w ++) {
@@ -329,7 +329,7 @@ public class Main {
     public static void getPlayerCount (String args){
         try {
             playerCount = Integer.parseInt(args.trim());
-            if (playerCount > 4){
+            if (playerCount > 4 || playerCount < 2){
                 throw new Exception();
             }
         } catch (InputMismatchException e) {
@@ -341,7 +341,7 @@ public class Main {
                 System.exit(1);
             }
         } catch (Exception e) {
-            System.out.println("\nError!!! : Player count cannot be more than 4 please provide player count less than 4");
+            System.out.println("\nError!!! : Player count cannot be more than 4 and less than 2 please provide player count less than 4");
             try {
                 throw new ParametersError();
             } catch (ParametersError ex) {
@@ -478,12 +478,21 @@ public class Main {
     public static void getRoundCount (String args)   {
         try {
             roundCount = Integer.parseInt(args.trim());
+        } catch (NumberFormatException numberFormatException){
+            System.err.println("Error: please provide Integer value ");
+            try {
+                throw new ParametersError();
+            } catch (ParametersError ex) {
+                System.err.println(ex.getMessage());
+                System.exit(1);
+            }
+
         } catch (Exception e) {
             System.err.println("Invalid parameter please provide Integer value for count number");
             try {
                 throw new ParametersError();
             } catch (ParametersError ex) {
-                System.err.println(e.getMessage());
+                System.err.println(ex.getMessage());
                 System.exit(1);
             }
         }
