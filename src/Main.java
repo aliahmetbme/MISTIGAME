@@ -382,7 +382,7 @@ public class Main {
             if (!gamerCategory.equals("HUMAN") && !gamerCategory.equals("EXPERT-BOTH") && !gamerCategory.equals("REGULAR-BOTH")
                     && !gamerCategory.equals("NOVICE-BOTH")) {
                 try {
-                    throw new GamerCategoryException("Please enter category correctly");
+                    throw new GamerCategoryException();
                 } catch (GamerCategoryException e) {
                     System.err.println(e.getMessage());
                     try {

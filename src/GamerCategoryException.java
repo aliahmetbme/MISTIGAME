@@ -2,11 +2,11 @@ import java.io.PrintWriter;
 
 public class GamerCategoryException extends Exception{
 
+    public GamerCategoryException(){
+       super("Please enter category correctly");
+    }
     public GamerCategoryException(String message){
-       super(message);
+        super(message);
     }
-    @Override
-    public void printStackTrace(PrintWriter s) {
-        super.printStackTrace(s);
-    }
+
 }
